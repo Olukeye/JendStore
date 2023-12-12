@@ -9,7 +9,7 @@ using System.Diagnostics.Metrics;
 
 namespace JendStore.Services.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/coupon")]
     [ApiController]
     public class CouponController : Controller
     {
@@ -38,7 +38,7 @@ namespace JendStore.Services.API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ResponseDTOStatus> GetOne(int id)
+        public async Task<ResponseDTOStatus> Get(int id)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace JendStore.Services.API.Controllers
 
 
         [HttpGet("code/{code}")]
-        public async Task<ResponseDTOStatus> GetOne(string code)
+        public async Task<ResponseDTOStatus> GetCode(string code)
         {
             try
             {
@@ -120,13 +120,13 @@ namespace JendStore.Services.API.Controllers
 
 
         [HttpPut("{id:int}")]
-        public async Task<ResponseDTOStatus> Edit(int id, [FromBody] UpdateCouponDTO UpdateDTO)
+        public async Task<ResponseDTOStatus> Put(int id, [FromBody] UpdateCouponDTO updateDTO)
         {
             try
             {
                 if (!ModelState.IsValid && id < 1)
                 {
-                    _logger.LogError($"Invalid Update Action in {nameof(Edit)}");
+                    _logger.LogError($"Invalid Update Action in {nameof(Put)}");
                     _response.StatusResult = ModelState;
                 }
 
@@ -134,10 +134,10 @@ namespace JendStore.Services.API.Controllers
 
                 if (coupon == null)
                 {
-                    _logger.LogError($"Invalid action in {nameof(Edit)}");
+                    _logger.LogError($"Invalid action in {nameof(Put)}");
                 }
 
-                var result = _mapper.Map(UpdateDTO, coupon);
+                var result = _mapper.Map(updateDTO, coupon);
                 _unitOfWork.Coupons.Update(coupon);
                 await _unitOfWork.Save();
 

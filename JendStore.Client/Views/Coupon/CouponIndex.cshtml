@@ -1,0 +1,27 @@
+﻿@model IEnumerable<JendStore.Client.Models.CouponDTO>
+
+<table class="table caption-top">
+    <caption><b>List of Coupons</b></caption>
+    <thead>
+        <tr>
+            <th scope="col">Code</th>
+            <th scope="col">Discount</th>
+            <th scope="col">MinAmount</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+        <tr>
+            <td>@Html.DisplayFor(Model => item.Code)</td>
+            <td>@((item.Discount).ToString())</td>
+            <td>@((item.MinAmount).ToString())</td>
+            <td>
+                <a class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pen">&#xE254;</i></a>
+                <a class="btn btn-danger" title="Delete" data-toggle="tooltip"><i class="bi bi-trash">&#xE872;</i></a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
