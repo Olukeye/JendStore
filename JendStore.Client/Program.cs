@@ -1,4 +1,6 @@
-using JendStore.Client.Iservices;
+using JendStore.Client.Service.IService;
+using JendStore.Client.Sevice;
+using JendStore.Client.Sevice.IServices;
 using JendStore.Client.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,10 +1,11 @@
 ﻿using JendStore.Client.Models;
+using JendStore.Client.Sevice.IServices;
 using Newtonsoft.Json;
 using System.Net;
 using System.Text;
 using static JendStore.Client.Utilities.HttpVerbs;
 
-namespace JendStore.Client.Iservices
+namespace JendStore.Client.Sevice
 {
     public class BaseService : IBaseService
     {

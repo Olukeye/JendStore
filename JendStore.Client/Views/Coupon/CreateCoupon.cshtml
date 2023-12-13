@@ -1,0 +1,28 @@
+﻿@model CouponDTO
+
+<!-- Create a form with Bootstrap classes -->
+<form class="row g-3 mt-5">
+    <div class="col-md-6">
+        <label for="inputCode" class="form-label">Code</label>
+        <input asp-for="Code" type="discount" class="form-control" id="inputDiscount">
+        <span asp-validation-for="Code" class="text-danger" />
+    </div>
+    <div class="col-md-6">
+        <label for="inputDiscount" class="form-label">Discount</label>
+        <input asp-for="Discount" type="discount" class="form-control" id="inputDiscount">
+        <span asp-validation-for="Discount" class="text-danger" />
+    </div>
+    <div class="col-12">
+        <label for="inputMinAmount" class="form-label">MinAmount</label>
+        <input asp-for="MinAmount" type="discount" class="form-control" id="inputDiscount">
+        <span asp-validation-for="MinAmount" class="text-danger" />
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-success">Submit</button>
+        <a asp-action="CouponIndex" type="return" class="btn btn-info">Return</a>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
+}

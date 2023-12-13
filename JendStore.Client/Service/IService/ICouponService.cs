@@ -1,6 +1,6 @@
 ﻿using JendStore.Client.Models;
 
-namespace JendStore.Client.Iservices
+namespace JendStore.Client.Service.IService
 {
     public interface ICouponService
     {

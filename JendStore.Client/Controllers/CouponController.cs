@@ -1,5 +1,5 @@
-﻿using JendStore.Client.Iservices;
-using JendStore.Client.Models;
+﻿using JendStore.Client.Models;
+using JendStore.Client.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -25,6 +25,11 @@ namespace JendStore.Client.Controllers
                 list = JsonConvert.DeserializeObject<List<CouponDTO>>(Convert.ToString(response.StatusResult));
             }
             return View(list);
+        }
+
+        public async Task<IActionResult> CreateCoupon()
+        {
+            return View();
         }
     }
 }

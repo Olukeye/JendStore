@@ -28,7 +28,7 @@ namespace JendStore.Services.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ResponseDTOStatus> GetAll()
+        public async Task<ResponseDTOStatus> Get()
         {
             var coupon = await _unitOfWork.Coupons.GetAll();
 
@@ -92,13 +92,13 @@ namespace JendStore.Services.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ResponseDTOStatus> Create([FromBody] CreateCouponDTO createDTO)
+        public async Task<ResponseDTOStatus> Post([FromBody] CreateCouponDTO createDTO)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    _logger.LogError($"Invalid Post Action in {nameof(Create)}");
+                    _logger.LogError($"Invalid Post Action in {nameof(Post)}");
                     return _response;
                 }
                 var coupon = _mapper.Map<Coupon>(createDTO);
