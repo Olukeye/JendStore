@@ -10,17 +10,20 @@ namespace JendStore.Client.Sevice
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
+
+
         public BaseService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
+
         public async Task<ResponseDTOStatus?> SendAsync(RequestDTOModel requestDTOModel)
         {
             try
             {
                 HttpClient client = _httpClientFactory.CreateClient("JendStoreAPI");
                 HttpRequestMessage message = new();
-                message.Headers.Add("Accept", "Application/json");
+                message.Headers.Add("Accept", "application/json");
 
                 //
 
@@ -64,7 +67,7 @@ namespace JendStore.Client.Sevice
             }
             catch (Exception ex)
             {
-                var dtoResponse = new ResponseDTOStatus()
+                var dtoResponse = new ResponseDTOStatus
                 {
                     Message = ex.Message.ToString(),
                     Status = false

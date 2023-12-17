@@ -9,5 +9,6 @@ namespace JendStore.Client.Service.IService
         Task<ResponseDTOStatus?> GetCouponAsync(int id);
         Task<ResponseDTOStatus?> UpdateCouponAsync(int id);
         Task<ResponseDTOStatus?> CreateCouponAsync(CouponDTO couponDTO);
+        Task<ResponseDTOStatus?> DeleteCouponAsync(int id);
     }
 }

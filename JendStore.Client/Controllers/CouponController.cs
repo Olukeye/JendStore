@@ -1,5 +1,6 @@
 ﻿using JendStore.Client.Models;
 using JendStore.Client.Service.IService;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -14,7 +15,6 @@ namespace JendStore.Client.Controllers
         }
 
         public async Task<IActionResult> CouponIndex()
-
         {
             List<CouponDTO>? list = new();
 
@@ -31,5 +31,46 @@ namespace JendStore.Client.Controllers
         {
             return View();
         }
-    }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCoupon(CouponDTO create)
+        {
+            if (ModelState.IsValid)
+            {
+                ResponseDTOStatus? response = await _couponService.CreateCouponAsync(create);
+
+                if (response != null && response.Status)
+                {
+                    return RedirectToAction(nameof(CouponIndex));
+                }
+            }
+            return View(create);
+        }
+
+        public async Task<IActionResult> DeleteCoupon(int couponId)
+        {
+
+            ResponseDTOStatus? response = await _couponService.GetCouponAsync(couponId);
+
+            if(response != null && response.Status)
+            {
+                CouponDTO? model = JsonConvert.DeserializeObject<CouponDTO>(Convert.ToString(response.StatusResult));
+                return View(model);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteCoupon(CouponDTO couponDTO)
+        {
+               ResponseDTOStatus? response = await _couponService.DeleteCouponAsync(couponDTO.CouponId);
+
+                if (response != null && response.Status)
+                {
+                    return RedirectToAction(nameof(CouponIndex));
+                }
+
+            return View(couponDTO);
+        }
+    }  
 }

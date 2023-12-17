@@ -37,7 +37,7 @@ namespace JendStore.Client.Sevice
             return await _baseService.SendAsync(new RequestDTOModel()
             {
                 ApiType = HttpVerbs.ApiType.GET,
-                Url = HttpVerbs.CouponAPIBase + "/api/coupon/code" + code
+                Url = HttpVerbs.CouponAPIBase + "/api/coupon/code/" + code
             });
         }
 
@@ -46,7 +46,7 @@ namespace JendStore.Client.Sevice
             return await _baseService.SendAsync(new RequestDTOModel()
             {
                 ApiType = HttpVerbs.ApiType.GET,
-                Url = HttpVerbs.CouponAPIBase + "/api/coupon" + id
+                Url = HttpVerbs.CouponAPIBase + "/api/coupon/" + id
             });
         }
 
@@ -55,7 +55,16 @@ namespace JendStore.Client.Sevice
             return await _baseService.SendAsync(new RequestDTOModel()
             {
                 ApiType = HttpVerbs.ApiType.PUT,
-                Url = HttpVerbs.CouponAPIBase + "/api/coupon" + id
+                Url = HttpVerbs.CouponAPIBase + "/api/coupon/" + id
+            });
+        }
+
+        public async Task<ResponseDTOStatus?> DeleteCouponAsync(int id)
+        {
+            return await _baseService.SendAsync(new RequestDTOModel()
+            {
+                ApiType = HttpVerbs.ApiType.DELETE,
+                Url = HttpVerbs.CouponAPIBase + "/api/coupon/" + id
             });
         }
     }

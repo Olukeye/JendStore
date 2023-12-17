@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using JendStore.Services.API.Data;
 using JendStore.Services.API.DTO;
 using JendStore.Services.API.IRepository;
 using JendStore.Services.API.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Metrics;
+
 
 namespace JendStore.Services.API.Controllers
 {
@@ -37,8 +35,8 @@ namespace JendStore.Services.API.Controllers
             return _response;
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ResponseDTOStatus> Get(int id)
+        [HttpGet("{couponId:int}")]
+        public async Task<ResponseDTOStatus> Get(int couponId)
         {
             try
             {
@@ -47,7 +45,7 @@ namespace JendStore.Services.API.Controllers
                    _response.StatusResult = ModelState;
                 }
 
-                var coupon = await _unitOfWork.Coupons.Get(c => c.CouponId == id);
+                var coupon = await _unitOfWork.Coupons.Get(c => c.CouponId == couponId);
 
                 _response.StatusResult = _mapper.Map<CouponDTO>(coupon);
 
@@ -70,7 +68,7 @@ namespace JendStore.Services.API.Controllers
 
                 if (!ModelState.IsValid)
                 {
-                    _response.StatusResult = ModelState;
+                    _response.StatusResult = ModelState.Root;
                 }
 
                 var coupon = await _unitOfWork.Coupons.Get(c => c.Code.ToLower() == code.ToLower());
@@ -119,18 +117,18 @@ namespace JendStore.Services.API.Controllers
         }
 
 
-        [HttpPut("{id:int}")]
-        public async Task<ResponseDTOStatus> Put(int id, [FromBody] UpdateCouponDTO updateDTO)
+        [HttpPut("{couponId:int}")]
+        public async Task<ResponseDTOStatus> Put(int couponId, [FromBody] UpdateCouponDTO updateDTO)
         {
             try
             {
-                if (!ModelState.IsValid && id < 1)
+                if (!ModelState.IsValid && couponId < 1)
                 {
                     _logger.LogError($"Invalid Update Action in {nameof(Put)}");
                     _response.StatusResult = ModelState;
                 }
 
-                var coupon = await _unitOfWork.Coupons.Get(c => c.CouponId == id);
+                var coupon = await _unitOfWork.Coupons.Get(c => c.CouponId == couponId);
 
                 if (coupon == null)
                 {
@@ -144,6 +142,37 @@ namespace JendStore.Services.API.Controllers
                 _response.StatusResult = result;
             }
             catch (Exception ex)
+            {
+                _response.Status = false;
+                _response.Message = ex.Message;
+            }
+            return _response;
+        }
+
+
+        [HttpDelete("{couponId:int}")]
+        public async Task<ResponseDTOStatus> Delete(int couponId)
+        {
+            try
+            {
+                if (!ModelState.IsValid && couponId < 1)
+                {
+                    _logger.LogError($"Invalid Update Action in {nameof(Delete)}");
+                    _response.StatusResult = ModelState;
+                }
+
+                var coupon = await _unitOfWork.Coupons.Get(c => c.CouponId == couponId);
+                if (coupon == null)
+                {
+                    _logger.LogError($"Invalid action in {nameof(Delete)}");
+                }
+
+                await _unitOfWork.Coupons.Delete(couponId);
+                await _unitOfWork.Save();
+
+                return _response;
+            }
+            catch(Exception ex)
             {
                 _response.Status = false;
                 _response.Message = ex.Message;

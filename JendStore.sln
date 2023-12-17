@@ -9,11 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{D93BF416-230B-431D-84FB-540EE10EE45C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JendStore.Services.API", "JendStore.Services.API\JendStore.Services.API.csproj", "{C4F19D76-5056-405E-A4A9-46DFDE37EA70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JendStore.Coupon.Service.API", "JendStore.Services.API\JendStore.Coupon.Service.API.csproj", "{C4F19D76-5056-405E-A4A9-46DFDE37EA70}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{06178DF0-38BB-49E0-A583-216B05B53B11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JendStore.Client", "JendStore.Client\JendStore.Client.csproj", "{0BE25347-3A6A-4989-9D85-0781979A2716}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JendStore.Client", "JendStore.Client\JendStore.Client.csproj", "{0BE25347-3A6A-4989-9D85-0781979A2716}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JendStore.Security.Service.API", "JendStore.Security.API\JendStore.Security.Service.API.csproj", "{B73735C0-D7B6-4515-BA48-874BC3A1CCE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{0BE25347-3A6A-4989-9D85-0781979A2716}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BE25347-3A6A-4989-9D85-0781979A2716}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BE25347-3A6A-4989-9D85-0781979A2716}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B73735C0-D7B6-4515-BA48-874BC3A1CCE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B73735C0-D7B6-4515-BA48-874BC3A1CCE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B73735C0-D7B6-4515-BA48-874BC3A1CCE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B73735C0-D7B6-4515-BA48-874BC3A1CCE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +42,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C4F19D76-5056-405E-A4A9-46DFDE37EA70} = {D93BF416-230B-431D-84FB-540EE10EE45C}
 		{0BE25347-3A6A-4989-9D85-0781979A2716} = {06178DF0-38BB-49E0-A583-216B05B53B11}
+		{B73735C0-D7B6-4515-BA48-874BC3A1CCE2} = {D93BF416-230B-431D-84FB-540EE10EE45C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4602B2CB-9082-4664-8447-C83C1B729F75}

@@ -1,4 +1,5 @@
-﻿@model IList<CouponDTO>
+﻿@model IEnumerable<CouponDTO>
+
 
 <table class="table caption-top mt-5  text-center mt-4">
     <caption><b>List of Coupons</b></caption>
@@ -15,11 +16,10 @@
         {
         <tr>
             <td>@item.Code</td>
-            <td>@((item.Discount).ToString())</td>
-            <td>@((item.MinAmount).ToString())</td>
+            <td>@((item.Discount).ToString("c"))</td>
+            <td>@((item.MinAmount).ToString("c"))</td>
             <td>
-            <button class="button"><i class="fa fa-pencil-square-o"></i></button>
-            <a class="btn btn-danger" title="Delete" data-toggle="tooltip"><i class="bi bi-trash">&#xE872;</i></a>
+                 <a asp-action="DeleteCoupon" asp-route-couponId="@item.CouponId" class="btn btn-danger" data-toggle="tooltip"><i class="bi bi-trash">&#xE872;</i></a>
             </td>
         </tr>
         }
