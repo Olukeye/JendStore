@@ -26,4 +26,10 @@ namespace JendStore.Security.Service.API.DTO
         public ICollection<string> Roles { get; set; } 
 
     }
+
+    public class UserResponse
+    {
+        public UserDTO User { get; set; }
+        public string Token { get; set; }
+    }
 }

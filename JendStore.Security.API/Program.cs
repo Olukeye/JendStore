@@ -12,9 +12,12 @@ builder.Services.AddDbContext<DatabaseContext>(options => {
 });
 
 builder.Services.AddAutoMapper(typeof(MapperInitilizer));
+var Config = builder.Configuration;
 
 builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJWT(Config);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

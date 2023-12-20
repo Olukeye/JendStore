@@ -14,29 +14,29 @@ namespace JendStore.Services.API.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger<CouponController> _logger;
-        private ResponseDTOStatus _response;
+        protected ResponseDTOStatus _response;
 
         public CouponController(IUnitOfWork unitOfWork, ILogger<CouponController> logger,  IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
-            _response = new ResponseDTOStatus();
+            _response = new();
 
         }
 
         [HttpGet]
-        public async Task<ResponseDTOStatus> Get()
+        public async Task<IActionResult> Get()
         {
             var coupon = await _unitOfWork.Coupons.GetAll();
 
             _response.StatusResult = _mapper.Map<IList<CouponDTO>>(coupon);
 
-            return _response;
+            return Ok(_response);
         }
 
         [HttpGet("{couponId:int}")]
-        public async Task<ResponseDTOStatus> Get(int couponId)
+        public async Task<IActionResult> Get(int couponId)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace JendStore.Services.API.Controllers
                 _response.Message = ex.Message;
             }
 
-            return _response;
+            return Ok(_response);
         }
 
 

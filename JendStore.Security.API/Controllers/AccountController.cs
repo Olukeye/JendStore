@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using JendStore.Security.API.Models;
 using JendStore.Security.Service.API.DTO;
+using JendStore.Security.Service.API.ResponseHandler;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,12 +14,15 @@ namespace JendStore.Security.Service.API.Controllers
         private readonly UserManager<ApiUser> _userManager;
         private readonly ILogger<AccountController> _logger;
         private readonly IMapper _mapper;
+        protected ResponseStatus _response;
+
 
         public AccountController(UserManager<ApiUser> userManager, IMapper mapper, ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _logger = logger;
             _mapper = mapper;
+            _response = new();
         }
 
         [HttpPost]
@@ -47,7 +51,7 @@ namespace JendStore.Security.Service.API.Controllers
 
             await _userManager.AddToRolesAsync(user, userDTO.Roles);
 
-            return Accepted();
+            return Accepted(_response);
         }
     }
 }
