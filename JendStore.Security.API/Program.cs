@@ -1,4 +1,5 @@
 using JendStore.Security.API.Data;
+using JendStore.Security.Service.API.AuthRepository;
 using JendStore.Security.Service.API.Configuration;
 using JendStore.Security.Service.API.ServiceExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DatabaseContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection"));
 });
-
+builder.Services.AddScoped<IAuth, Auth>();
 builder.Services.AddAutoMapper(typeof(MapperInitilizer));
 var Config = builder.Configuration;
 

@@ -1,6 +1,6 @@
 ﻿using JendStore.Security.API.Models;
 using JendStore.Security.Service.API.DTO;
-using JendStore.Security.Service.API.Repository;
+using JendStore.Security.Service.API.AuthRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,7 +16,7 @@ namespace JendStore.Security.Service.API.AuthRepository
         private ApiUser _user;
 
 
-        public Auth(UserManager<ApiUser> userManager, IConfiguration configuration)
+        public Auth(UserManager<ApiUser> userManager,  IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
@@ -52,7 +52,7 @@ namespace JendStore.Security.Service.API.AuthRepository
         {
             var claims = new List<Claim>
            {
-               new Claim(ClaimTypes.Name, _user.UserName)
+               new Claim(ClaimTypes.Name, _user.UserName),
            };
 
             var roles = await _userManager.GetRolesAsync(_user);
@@ -72,10 +72,27 @@ namespace JendStore.Security.Service.API.AuthRepository
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
-        public  async Task<bool> ValidateUser(LoginDTO loginDTO)
+        public async Task<bool> ValidateUser(LoginDTO loginDTO)
         {
             _user = await _userManager.FindByNameAsync(loginDTO.Email);
             return (_user != null && await _userManager.CheckPasswordAsync(_user, loginDTO.Password));
         }
+
+        //public async Task<bool> AssignRole(string roleName, string email)
+        //{
+        //    _user = await _userManager.FindByEmailAsync(email.ToLower());
+
+        //    if(_user != null)
+        //    {
+        //        if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
+        //        {
+        //            _roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
+        //        }
+
+        //        await _userManager.AddToRoleAsync(_user, roleName);
+        //        return true; 
+        //    }
+        //    return false;
+        //}
     }
 }

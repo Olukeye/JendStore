@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{06178D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JendStore.Client", "JendStore.Client\JendStore.Client.csproj", "{0BE25347-3A6A-4989-9D85-0781979A2716}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JendStore.Security.Service.API", "JendStore.Security.API\JendStore.Security.Service.API.csproj", "{B73735C0-D7B6-4515-BA48-874BC3A1CCE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JendStore.Security.Service.API", "JendStore.Security.API\JendStore.Security.Service.API.csproj", "{B73735C0-D7B6-4515-BA48-874BC3A1CCE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

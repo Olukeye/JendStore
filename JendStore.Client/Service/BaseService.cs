@@ -1,5 +1,5 @@
 ﻿using JendStore.Client.Models;
-using JendStore.Client.Sevice.IServices;
+using JendStore.Client.Sevice.IService;
 using Newtonsoft.Json;
 using System.Net;
 using System.Text;

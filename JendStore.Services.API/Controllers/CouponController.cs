@@ -68,13 +68,14 @@ namespace JendStore.Services.API.Controllers
 
                 if (!ModelState.IsValid)
                 {
-                    _response.StatusResult = ModelState.Root;
+                    _response.StatusResult = ModelState;
                 }
 
                 var coupon = await _unitOfWork.Coupons.Get(c => c.Code.ToLower() == code.ToLower());
 
                 if(coupon == null)
                 {
+                    _response.Status = false;
                     _response.Message = ("Code coupon Invalid ");
                 }
 
@@ -90,14 +91,14 @@ namespace JendStore.Services.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ResponseDTOStatus> Post([FromBody] CreateCouponDTO createDTO)
+        public async Task<IActionResult> Post([FromBody] CreateCouponDTO createDTO)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
                     _logger.LogError($"Invalid Post Action in {nameof(Post)}");
-                    return _response;
+                    _response.StatusResult = ModelState;
                 }
                 var coupon = _mapper.Map<Coupon>(createDTO);
 
@@ -113,9 +114,8 @@ namespace JendStore.Services.API.Controllers
                 _response.Status = false;
                 _response.Message = ex.Message;
             }
-            return _response;
+            return Ok(_response);
         }
-
 
         [HttpPut("{couponId:int}")]
         public async Task<ResponseDTOStatus> Put(int couponId, [FromBody] UpdateCouponDTO updateDTO)

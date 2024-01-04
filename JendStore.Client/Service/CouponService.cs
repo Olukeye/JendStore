@@ -1,6 +1,6 @@
 ﻿using JendStore.Client.Models;
 using JendStore.Client.Service.IService;
-using JendStore.Client.Sevice.IServices;
+using JendStore.Client.Sevice.IService;
 using JendStore.Client.Utilities;
 
 
@@ -13,6 +13,8 @@ namespace JendStore.Client.Sevice
         {
             _baseService = baseService;
         }
+
+
         public async Task<ResponseDTOStatus?> GetAllCouponAsync()
         {
             return await _baseService.SendAsync(new RequestDTOModel()

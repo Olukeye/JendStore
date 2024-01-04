@@ -1,0 +1,25 @@
+﻿@model LoginDto
+
+<div class="login-form">
+    <div class="text">
+        LOGIN
+    </div>
+    <div class="row text-center">
+        <div asp-validation-summary="All" class="text-danger"></div>
+    </div>
+    <form>
+        <div class="field">
+            <div class="fas fa-envelope"></div>
+            <input asp-for="Email" type="text" placeholder="Email or Phone">
+        </div>
+        <div class="field">
+            <div class="fas fa-lock"></div>
+            <input asp-for="Password" type="password" placeholder="Password">
+        </div>
+        <button type="submit">LOGIN</button>
+        <div class="link">
+            Not a member?
+            <a href="#">Signup now</a>
+        </div>
+    </form>
+</div>

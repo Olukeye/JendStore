@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Auth\Login.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Auth\Login.cshtml" />
   </ItemGroup>
 
 </Project>
