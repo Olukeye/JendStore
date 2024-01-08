@@ -1,14 +1,14 @@
 ﻿using JendStore.Client.Models;
-using JendStore.Client.Service;
+using JendStore.Client.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JendStore.Client.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
-        public AuthController(AuthService  authService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
         }

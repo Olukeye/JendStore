@@ -1,0 +1,47 @@
+﻿@model RegisterDto
+<style>   
+button {   
+       background-color: #4CAF50;   
+       width: 100%;  
+        color: pink;   
+        padding: 15px;   
+        margin: 10px 0px;   
+        border: none;   
+        cursor: pointer;   
+         }   
+ 
+ input[type=text], input[type=password] {   
+        width: 100%;   
+        margin: 8px 0;  
+        padding: 12px 20px;   
+        display: inline-block;   
+        box-sizing: border-box;   
+    }  
+ button:hover {   
+        opacity: 0.7;   
+  }   
+</style>   
+    <center class="mt-5"> <h1> Register </h1> </center>
+    <div>
+        <div asp-validation-summary="All" class="text-danger"></div>
+    </div>
+    <form method="post">  
+        <div class="container">
+        <label>FirstName </label>
+        <input asp-for="FirstName" type="text" name="FirstName" required>
+
+        <label>LastName </label>
+        <input type="LastName" type="text" asp-for="LastName" name="LastName" required>
+
+        <label>Address </label>
+        <input type="Address" type="text" asp-for="Address" name="password" required>
+        <label>PhoneNumber </label>
+        <input type="PhoneNumber" type="text" asp-for="PhoneNumber" name="password" required>
+        <label>Email </label>
+        <input type="Email" type="text" asp-for="Email" name="Email" required>
+        <label>Password </label>
+        <input type="password" type="text" asp-for="Password" name="password" required>
+        <button type="submit">Register</button>
+        Already Signup <a asp-action="Login"> Login? </a>
+    </div>   
+    </form>     

@@ -2,7 +2,7 @@
 using JendStore.Client.Service.IService;
 using JendStore.Client.Sevice.IService;
 using JendStore.Client.Utilities;
-
+   
 
 namespace JendStore.Client.Service
 {
