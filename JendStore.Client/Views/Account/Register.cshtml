@@ -1,0 +1,70 @@
+﻿@model RegisterDto
+ 
+    <center class="mt-3"> <h1> Register </h1> </center>
+   <form class="row g-3 mt-5" method="post">
+    <div class="col-md-6">
+        <label>FirstName </label>
+        <input asp-for="FirstName" type="text" name="FirstName" required>
+        <span asp-validation-for="FirstName" class="text-danger" />
+    </div>       
+    <div class="col-md-6">
+        <label>LastName </label>
+        <input type="LastName" type="text" asp-for="LastName" name="LastName" required>
+        <span asp-validation-for="LastName" class="text-danger" />
+        </div>
+    <div class="col-md-6">
+        <label>Address </label>
+        <input type="Address" type="text" asp-for="Address" name="password" required>
+        <span asp-validation-for="Address" class="text-danger" />
+        </div>
+    <div class="col-md-6">
+        <label>PhoneNumber </label>
+        <input type="PhoneNumber" type="text" asp-for="PhoneNumber" name="password" required>
+        <span asp-validation-for="PhoneNumber" class="text-danger" />
+        </div>
+    <div class="col-md-6">
+        <label>Email </label>
+        <input type="Email" type="text" asp-for="Email" name="Email" required>
+        <span asp-validation-for="Email" class="text-danger" />
+     </div>
+    <div class="col-md-6">
+        <label>Password </label>
+        <input type="password" type="text" asp-for="Password" name="password" required>
+        <span asp-validation-for="Password" class="text-danger" />
+        </div>
+
+
+    <div class="col-12 col-md-6 0ffset-md-3 pb-2">
+        <label>Role </label>
+        <select asp-for="Role" class="form-select" asp-items="ViewBag.Role"></select>
+    </div>
+    <div class="col-md-12">
+        <button type="submit">Register</button>
+        Already Signup <a asp-action="Login"> Login? </a>
+    </div>   
+    </form>
+
+
+<style>
+    button {
+        background-color: #4CAF50;
+        width: 100%;
+        color: pink;
+        padding: 15px;
+        margin: 10px 0px;
+        border: none;
+        cursor: pointer;
+    }
+
+    input[type=text], input[type=password] {
+        width: 100%;
+        margin: 8px 0;
+        padding: 12px 20px;
+        display: inline-block;
+        box-sizing: border-box;
+    }
+
+    button:hover {
+        opacity: 0.7;
+    }
+</style>  

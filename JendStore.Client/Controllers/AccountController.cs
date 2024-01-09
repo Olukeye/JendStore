@@ -1,14 +1,16 @@
 ﻿using JendStore.Client.Models;
 using JendStore.Client.Service.IService;
+using JendStore.Client.Utilities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace JendStore.Client.Controllers
 {
-    public class AuthController : Controller
+    public class AccountController : Controller
     {
         private readonly IAuthService _authService;
 
-        public AuthController(IAuthService authService)
+        public AccountController(IAuthService authService)
         {
             _authService = authService;
         }
@@ -16,6 +18,13 @@ namespace JendStore.Client.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            var role = new List<SelectListItem>()
+            {
+                new SelectListItem{Text= HttpVerbs.RoleAdmin, Value= HttpVerbs.RoleAdmin },
+                new SelectListItem{ Text = HttpVerbs.RoleCustomer, Value = HttpVerbs.RoleCustomer }
+            };
+            ViewBag.Role = role;
+
             return View();
         }
 
