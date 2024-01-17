@@ -19,10 +19,9 @@ namespace JendStore.Security.Service.API.ServiceExtensions
                 opt.User.RequireUniqueEmail = true;
                 opt.SignIn.RequireConfirmedEmail = true;
             });
-
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), services);
+            builder.AddRoles<IdentityRole>();
             builder.AddEntityFrameworkStores<DatabaseContext>().AddDefaultTokenProviders();
-
         }
 
         public static void ExceptionHandlerConfiguration(this IApplicationBuilder app)
@@ -40,7 +39,7 @@ namespace JendStore.Security.Service.API.ServiceExtensions
                         Log.Error($"Something Went Wrong In {contextFeature.Error}");
                         await context.Response.WriteAsync(new ResponseStatus()
                         {
-                            StatusCode = context.Response.StatusCode,
+                            Status = context.Response.StatusCode,
                             Message = "Internal Server Error..."
                         }.ToString());
                     }

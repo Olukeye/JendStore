@@ -23,7 +23,7 @@ namespace JendStore.Security.Service.API.DTO
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
-        public ICollection<string> Roles { get; set; } 
+        public string? Roles { get; set; } 
 
     }
 

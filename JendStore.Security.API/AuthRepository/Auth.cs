@@ -1,6 +1,6 @@
-﻿using JendStore.Security.API.Models;
+﻿using JendStore.Security.API.Data;
+using JendStore.Security.API.Models;
 using JendStore.Security.Service.API.DTO;
-using JendStore.Security.Service.API.AuthRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,13 +11,17 @@ namespace JendStore.Security.Service.API.AuthRepository
 {
     public class Auth : IAuth
     {
+        private readonly DatabaseContext _db;
         private readonly UserManager<ApiUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private ApiUser _user;
 
 
-        public Auth(UserManager<ApiUser> userManager,  IConfiguration configuration)
+        public Auth(UserManager<ApiUser> userManager, DatabaseContext db,  IConfiguration configuration, RoleManager<IdentityRole> roleManager)
         {
+            _db = db;
+            _roleManager = roleManager;
             _userManager = userManager;
             _configuration = configuration;
         }
@@ -78,21 +82,22 @@ namespace JendStore.Security.Service.API.AuthRepository
             return (_user != null && await _userManager.CheckPasswordAsync(_user, loginDTO.Password));
         }
 
-        //public async Task<bool> AssignRole(string roleName, string email)
-        //{
-        //    _user = await _userManager.FindByEmailAsync(email.ToLower());
 
-        //    if(_user != null)
-        //    {
-        //        if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
-        //        {
-        //            _roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
-        //        }
+        public async Task<bool> AssignRole(string roleName, string email)
+        {
+            var user = _db.Users.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
 
-        //        await _userManager.AddToRoleAsync(_user, roleName);
-        //        return true; 
-        //    }
-        //    return false;
-        //}
+            if (user != null)
+            {
+                if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
+                {
+                    _roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
+                }
+
+                await _userManager.AddToRoleAsync(user, roleName);
+                return true;
+            }
+            return false;
+        }
     }
 }

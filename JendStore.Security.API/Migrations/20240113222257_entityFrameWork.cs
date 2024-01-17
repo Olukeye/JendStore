@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace JendStore.Security.Service.API.Migrations
 {
     /// <inheritdoc />
-    public partial class AddEntity : Migration
+    public partial class entityFrameWork : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -166,8 +166,8 @@ namespace JendStore.Security.Service.API.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "bb47204e-a013-4f2c-a20f-e4c72b823d20", null, "Admin", "ADMIN" },
-                    { "c06b5c39-16bf-42e0-a39d-8a07944e4e52", null, "User", "USER" }
+                    { "92128fbb-0941-4033-96a7-b588e8fdc4ae", null, "User", "USER" },
+                    { "d02104f9-d95c-456d-b6f3-fb5ee3b4040b", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

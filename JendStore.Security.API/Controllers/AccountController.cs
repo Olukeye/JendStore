@@ -51,9 +51,9 @@ namespace JendStore.Security.Service.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _userManager.AddToRolesAsync(user, userDTO.Roles);
+            //await _userManager.AddToRolesAsync(user, userDTO.Roles);z
 
-            return Accepted(_response);
+            return Accepted();
         }
 
         [HttpPost]
@@ -80,7 +80,10 @@ namespace JendStore.Security.Service.API.Controllers
         //{
         //    var user = await _userManager.FindByEmailAsync(userDto.Email.ToLower());
 
-        //    if (user == null )
+        //    _mapper.Map<ApiUser>(userDto);
+        //    await _userManager.CreateAsync(user, userDto.Email);
+
+        //    if (user == null)
         //    {
         //        _response.Success = false;
         //        _response.Message = "Error ecountered";
@@ -88,7 +91,22 @@ namespace JendStore.Security.Service.API.Controllers
 
         //    }
         //    await _userManager.AddToRolesAsync(user, userDto.Roles);
-        //    return Ok(_response);
+        //    return Ok();
         //}
+
+        [HttpPost("AssignRole")]
+        public async Task<IActionResult> AssignRole([FromBody] UserDTO model)
+        {
+            var userRole = await _auth.AssignRole( model.Roles.ToUpper(), model.Email);
+
+            if (!userRole)
+            {
+                _response.Success = false;
+                _response.Message = "Error ecountered";
+                return BadRequest(_response);
+            }
+
+            return Ok(_response);
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace JendStore.Client.Service
             return await _baseService.SendAsync(new RequestDTOModel()
             {
                 ApiType = HttpVerbs.ApiType.POST,
-                Data = registerDto,
+                Data = registerDto, 
                 Url = HttpVerbs.AuthAPIBase + "/api/auth/Register"
             });
         }
@@ -32,6 +32,17 @@ namespace JendStore.Client.Service
                 ApiType = HttpVerbs.ApiType.POST,
                 Data = loginDto,
                 Url = HttpVerbs.AuthAPIBase + "/api/auth/Login"
+            });
+        }
+
+        public async Task<ResponseDTOStatus?> AssignRoleAsync(RegisterDto registerDto)
+        {
+
+            return await _baseService.SendAsync(new RequestDTOModel()
+            {
+                ApiType = HttpVerbs.ApiType.POST,
+                Data = registerDto,
+                Url = HttpVerbs.AuthAPIBase + "/api/auth/AssignRole"
             });
         }
     }

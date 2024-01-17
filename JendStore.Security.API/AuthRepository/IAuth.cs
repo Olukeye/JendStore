@@ -6,6 +6,6 @@ namespace JendStore.Security.Service.API.AuthRepository
     {
         Task<bool> ValidateUser(LoginDTO loginDTO);
         Task<string> CreateToken();
-        //Task<bool> AssignRole(string roleName, string email);
+        Task<bool> AssignRole(string roleName, string email);
     }
 }
