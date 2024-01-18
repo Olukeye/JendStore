@@ -6,5 +6,7 @@ namespace JendStore.Client.Service.IService
     {
         Task<ResponseDTOStatus?> RegisterAsync(RegisterDto registerDto);
         Task<ResponseDTOStatus?> LoginAsync(LoginDto loginDto);
+        Task<ResponseDTOStatus?> AssignRoleAsync(RegisterDto registerDto);
+
     }
 }

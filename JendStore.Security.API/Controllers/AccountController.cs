@@ -97,8 +97,8 @@ namespace JendStore.Security.Service.API.Controllers
         [HttpPost("AssignRole")]
         public async Task<IActionResult> AssignRole([FromBody] UserDTO model)
         {
-            var userRole = await _auth.AssignRole( model.Roles.ToUpper(), model.Email);
-
+            var userRole = await _auth.AssignRole(model.Email, model.Role.ToUpper());
+            _mapper.Map<ApiUser>(model);
             if (!userRole)
             {
                 _response.Success = false;
