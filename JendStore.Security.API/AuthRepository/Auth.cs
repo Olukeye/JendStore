@@ -83,7 +83,7 @@ namespace JendStore.Security.Service.API.AuthRepository
         }
 
 
-        public async Task<bool> AssignRole(string roleName, string email)
+        public async Task<bool> AssignRole(string email, string roleName)
         {
             var user = _db.Users.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
 

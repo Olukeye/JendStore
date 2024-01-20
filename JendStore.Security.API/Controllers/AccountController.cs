@@ -27,8 +27,8 @@ namespace JendStore.Security.Service.API.Controllers
             _response = new();
         }
 
-        [HttpPost]
-        [Route("Register")]
+        [HttpPost("Register")]
+        //[Route("Register")]
         public async Task<IActionResult> Register([FromBody] UserDTO userDTO)
         {
             _logger.LogInformation($"Registration attempt for {userDTO.Email}!");

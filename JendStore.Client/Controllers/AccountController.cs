@@ -3,16 +3,47 @@ using JendStore.Client.Service.IService;
 using JendStore.Client.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace JendStore.Client.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly ITokenProvider _tokenProvider;
 
-        public AccountController(IAuthService authService)
+        public AccountController(IAuthService authService, ITokenProvider tokenProvider)
         {
             _authService = authService;
+            _tokenProvider = tokenProvider;
+        }
+
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            LoginDto loginDto = new();
+
+            return View(loginDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            ResponseDTOStatus response = await _authService.LoginAsync(loginDto);
+
+            if (response != null && response.Status)
+            {
+                LoginResponseDto loginResponseDto = JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(response.StatusResult));
+                _tokenProvider.SetToken(loginResponseDto.Token);
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("CustomeError", response.Message);
+                return View(loginDto);
+            }
         }
 
         [HttpGet]
@@ -36,15 +67,15 @@ namespace JendStore.Client.Controllers
 
             if(result!=null && result.Status)
             {
-                if (string.IsNullOrEmpty(registerDto.Roles))
+                if (string.IsNullOrEmpty(registerDto.Role))
                 {
-                    registerDto.Roles = HttpVerbs.RoleUser;
+                    registerDto.Role = HttpVerbs.RoleUser;
                 }
 
                 assignRole = await _authService.AssignRoleAsync(registerDto);
                 if(assignRole!=null && assignRole.Status)
                 {
-                    TempData["sucess"] = "Success";
+                    TempData["success"] = "Registration Successful";
                     return RedirectToAction(nameof(Login));
                 }
             }
@@ -58,15 +89,6 @@ namespace JendStore.Client.Controllers
             ViewBag.RoleList = role;
             return View(registerDto);
         }
-
-        [HttpGet]
-        public IActionResult Login()
-        {
-            LoginDto loginDto = new();
-
-            return View(loginDto);
-        }
-
 
         [HttpGet]
         public IActionResult Logout()
