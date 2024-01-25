@@ -13,6 +13,8 @@ namespace JendStore.Security.API.Data
 
         }
 
+        public DbSet<ApiUser> ApiUser { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

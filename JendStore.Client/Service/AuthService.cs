@@ -15,10 +15,10 @@ namespace JendStore.Client.Service
             _baseService = baseService;
         }
 
-        public async Task<ResponseDTOStatus?> AssignRoleAsync(RegisterDto registerDto)
+        public async Task<ResponsDto?> AssignRoleAsync(RegisterDto registerDto)
         {
 
-            return await _baseService.SendAsync(new RequestDTOModel()
+            return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = HttpVerbs.ApiType.POST,
                 Data = registerDto,
@@ -26,9 +26,9 @@ namespace JendStore.Client.Service
             });
         }
 
-        public async Task<ResponseDTOStatus?> RegisterAsync(RegisterDto registerDto)
+        public async Task<ResponsDto?> RegisterAsync(RegisterDto registerDto)
         {
-            return await _baseService.SendAsync(new RequestDTOModel()
+            return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = HttpVerbs.ApiType.POST,
                 Data = registerDto, 
@@ -36,9 +36,9 @@ namespace JendStore.Client.Service
             });
         }
 
-        public async Task<ResponseDTOStatus?> LoginAsync(LoginDto loginDto)
+        public async Task<ResponsDto?> LoginAsync(LoginDto loginDto)
         {
-            return await _baseService.SendAsync(new RequestDTOModel()
+            return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = HttpVerbs.ApiType.POST,
                 Data = loginDto,

@@ -17,7 +17,7 @@ namespace JendStore.Client.Sevice
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<ResponseDTOStatus?> SendAsync(RequestDTOModel requestDTOModel)
+        public async Task<ResponsDto?> SendAsync(RequestDto requestDTOModel)
         {
             try
             {
@@ -54,23 +54,23 @@ namespace JendStore.Client.Sevice
                 apiResponse = await client.SendAsync(message);
                 switch (apiResponse.StatusCode)
                 {
-                    case HttpStatusCode.NotFound: return new() { Status = false, Message = "Not Found" };
-                    case HttpStatusCode.Unauthorized: return new() { Status = false, Message = "UnAuthorized" };
-                    case HttpStatusCode.Forbidden: return new() { Status = false, Message = "Permission Denied" };
-                    case HttpStatusCode.BadRequest: return new() { Status = false, Message = "You Made  A Bad Request" };
-                    case HttpStatusCode.InternalServerError: return new() { Status = false, Message = "Internal Server Error" };
+                    case HttpStatusCode.NotFound: return new() { IsSuccess = false, Message = "Not Found" };
+                    case HttpStatusCode.Unauthorized: return new() { IsSuccess = false, Message = "UnAuthorized" };
+                    case HttpStatusCode.Forbidden: return new() { IsSuccess = false, Message = "Permission Denied" };
+                    case HttpStatusCode.BadRequest: return new() { IsSuccess = false, Message = "You Made  A Bad Request" };
+                    case HttpStatusCode.InternalServerError: return new() { IsSuccess = false, Message = "Internal Server Error" };
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                        var apiResponseDTO = JsonConvert.DeserializeObject<ResponseDTOStatus>(apiContent);
+                        var apiResponseDTO = JsonConvert.DeserializeObject<ResponsDto>(apiContent);
                         return apiResponseDTO;
                 }
             }
             catch (Exception ex)
             {
-                var dtoResponse = new ResponseDTOStatus
+                var dtoResponse = new ResponsDto
                 {
                     Message = ex.Message.ToString(),
-                    Status = false
+                    IsSuccess = false
                 };
                 return dtoResponse;
             }

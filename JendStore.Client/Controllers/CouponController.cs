@@ -1,6 +1,5 @@
 ﻿using JendStore.Client.Models;
 using JendStore.Client.Service.IService;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -9,6 +8,7 @@ namespace JendStore.Client.Controllers
     public class CouponController : Controller
     {
         private readonly ICouponService _couponService;
+
         public CouponController(ICouponService couponService)
         {
             _couponService = couponService;
@@ -18,11 +18,11 @@ namespace JendStore.Client.Controllers
         {
             List<CouponDTO>? list = new();
 
-            ResponseDTOStatus? response = await _couponService.GetAllCouponAsync();
+            ResponsDto? response = await _couponService.GetAllCouponAsync();
 
-            if(response != null && response.Status) 
+            if(response != null && response.IsSuccess) 
             {
-                list = JsonConvert.DeserializeObject<List<CouponDTO>>(Convert.ToString(response.StatusResult));
+                list = JsonConvert.DeserializeObject<List<CouponDTO>>(Convert.ToString(response.Result));
             }
             return View(list);
         }
@@ -37,9 +37,9 @@ namespace JendStore.Client.Controllers
         {
             if (ModelState.IsValid)
             {
-                ResponseDTOStatus? response = await _couponService.CreateCouponAsync(create);
+                ResponsDto? response = await _couponService.CreateCouponAsync(create);
 
-                if (response != null && response.Status)
+                if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(CouponIndex));
                 }
@@ -50,11 +50,11 @@ namespace JendStore.Client.Controllers
         public async Task<IActionResult> DeleteCoupon(int couponId)
         {
 
-            ResponseDTOStatus? response = await _couponService.GetCouponAsync(couponId);
+            ResponsDto? response = await _couponService.GetCouponAsync(couponId);
 
-            if(response != null && response.Status)
+            if(response != null && response.IsSuccess)
             {
-                CouponDTO? model = JsonConvert.DeserializeObject<CouponDTO>(Convert.ToString(response.StatusResult));
+                CouponDTO? model = JsonConvert.DeserializeObject<CouponDTO>(Convert.ToString(response.Result));
                 return View(model);
             }
             return NotFound();
@@ -63,9 +63,9 @@ namespace JendStore.Client.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteCoupon(CouponDTO couponDTO)
         {
-               ResponseDTOStatus? response = await _couponService.DeleteCouponAsync(couponDTO.CouponId);
+            ResponsDto? response = await _couponService.DeleteCouponAsync(couponDTO.CouponId);
 
-                if (response != null && response.Status)
+                if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(CouponIndex));
                 }

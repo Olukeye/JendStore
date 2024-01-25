@@ -6,7 +6,7 @@
         public static string AuthAPIBase{ get; set; }
         public const string RoleAdmin = "ADMIN";
         public const string RoleUser = "USER";
-        public const string TokenCookie = "JWTToken";
+        public const string TokenCookie = "Token";
 
         public enum ApiType
         {

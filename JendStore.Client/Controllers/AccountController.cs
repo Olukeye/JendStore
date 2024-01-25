@@ -30,12 +30,12 @@ namespace JendStore.Client.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
-            ResponseDTOStatus response = await _authService.LoginAsync(loginDto);
+            ResponsDto response = await _authService.LoginAsync(loginDto);
 
-            if (response != null && response.Status)
+            if (response != null && response.IsSuccess)
             {
-                LoginResponseDto loginResponseDto = JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(response.StatusResult));
-                _tokenProvider.SetToken(loginResponseDto.Token);
+                LoginResponseDto loginResponseDto = JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(response.Result));
+                //_tokenProvider.SetToken(loginResponseDto.Token);
 
                 return RedirectToAction("Index", "Home");
             }
@@ -62,10 +62,10 @@ namespace JendStore.Client.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
-            ResponseDTOStatus result = await _authService.RegisterAsync(registerDto);
-            ResponseDTOStatus assignRole;
+            ResponsDto result = await _authService.RegisterAsync(registerDto);
+            ResponsDto assignRole;
 
-            if(result!=null && result.Status)
+            if(result!=null && result.IsSuccess)
             {
                 if (string.IsNullOrEmpty(registerDto.Role))
                 {
@@ -73,7 +73,7 @@ namespace JendStore.Client.Controllers
                 }
 
                 assignRole = await _authService.AssignRoleAsync(registerDto);
-                if(assignRole!=null && assignRole.Status)
+                if(assignRole!=null && assignRole.IsSuccess)
                 {
                     TempData["success"] = "Registration Successful";
                     return RedirectToAction(nameof(Login));

@@ -30,7 +30,7 @@ namespace JendStore.Services.API.Controllers
         {
             var coupon = await _unitOfWork.Coupons.GetAll();
 
-            _response.StatusResult = _mapper.Map<IList<CouponDTO>>(coupon);
+            _response.Result = _mapper.Map<IList<CouponDTO>>(coupon);
 
             return Ok(_response);
         }
@@ -42,17 +42,17 @@ namespace JendStore.Services.API.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                   _response.StatusResult = ModelState;
+                    _response.Result = ModelState;
                 }
 
                 var coupon = await _unitOfWork.Coupons.Get(c => c.CouponId == couponId);
 
-                _response.StatusResult = _mapper.Map<CouponDTO>(coupon);
+                _response.Result = _mapper.Map<CouponDTO>(coupon);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _response.Status = false;
+                _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }
 
@@ -68,23 +68,23 @@ namespace JendStore.Services.API.Controllers
 
                 if (!ModelState.IsValid)
                 {
-                    _response.StatusResult = ModelState;
+                    _response.Result = ModelState;
                 }
 
                 var coupon = await _unitOfWork.Coupons.Get(c => c.Code.ToLower() == code.ToLower());
 
-                if(coupon == null)
+                if (coupon == null)
                 {
-                    _response.Status = false;
+                    _response.IsSuccess = false;
                     _response.Message = ("Code coupon Invalid ");
                 }
 
-                _response.StatusResult = _mapper.Map<CouponDTO>(coupon);
+                _response.Result = _mapper.Map<CouponDTO>(coupon);
 
             }
             catch (Exception ex)
             {
-                _response.Status = false;
+                _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }
             return _response;
@@ -98,7 +98,7 @@ namespace JendStore.Services.API.Controllers
                 if (!ModelState.IsValid)
                 {
                     _logger.LogError($"Invalid Post Action in {nameof(Post)}");
-                    _response.StatusResult = ModelState;
+                    _response.Result = ModelState;
                 }
                 var coupon = _mapper.Map<Coupon>(createDTO);
 
@@ -106,12 +106,12 @@ namespace JendStore.Services.API.Controllers
 
                 await _unitOfWork.Save();
 
-                _response.StatusResult = coupon;
-                
+                _response.Result = coupon;
+
             }
             catch (Exception ex)
             {
-                _response.Status = false;
+                _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }
             return Ok(_response);
@@ -125,7 +125,7 @@ namespace JendStore.Services.API.Controllers
                 if (!ModelState.IsValid && couponId < 1)
                 {
                     _logger.LogError($"Invalid Update Action in {nameof(Put)}");
-                    _response.StatusResult = ModelState;
+                    _response.Result = ModelState;
                 }
 
                 var coupon = await _unitOfWork.Coupons.Get(c => c.CouponId == couponId);
@@ -139,11 +139,11 @@ namespace JendStore.Services.API.Controllers
                 _unitOfWork.Coupons.Update(coupon);
                 await _unitOfWork.Save();
 
-                _response.StatusResult = result;
+                _response.Result = result;
             }
             catch (Exception ex)
             {
-                _response.Status = false;
+                _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }
             return _response;
@@ -158,7 +158,7 @@ namespace JendStore.Services.API.Controllers
                 if (!ModelState.IsValid && couponId < 1)
                 {
                     _logger.LogError($"Invalid Update Action in {nameof(Delete)}");
-                    _response.StatusResult = ModelState;
+                    _response.Result = ModelState;
                 }
 
                 var coupon = await _unitOfWork.Coupons.Get(c => c.CouponId == couponId);
@@ -174,7 +174,7 @@ namespace JendStore.Services.API.Controllers
             }
             catch(Exception ex)
             {
-                _response.Status = false;
+                _response.IsSuccess = false;
                 _response.Message = ex.Message;
             }
             return _response;

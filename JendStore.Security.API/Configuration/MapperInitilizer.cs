@@ -9,8 +9,8 @@ namespace JendStore.Security.Service.API.Configuration
     {
         public MapperInitilizer()
         {
-            CreateMap<ApiUser, UserDTO>().ReverseMap();
-            CreateMap<ApiUser, LoginDTO>().ReverseMap();
+            CreateMap<ApiUser, UserDto>().ReverseMap();
+            CreateMap<ApiUser, LoginDto>().ReverseMap();
         }
     }
 }

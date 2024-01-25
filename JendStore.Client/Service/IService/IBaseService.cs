@@ -4,6 +4,6 @@ namespace JendStore.Client.Sevice.IService
 {
     public interface IBaseService
     {
-        Task<ResponseDTOStatus?> SendAsync(RequestDTOModel requestDTOModel);
+        Task<ResponsDto?> SendAsync(RequestDto requestDTOModel);
     }
 }

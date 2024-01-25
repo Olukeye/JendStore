@@ -4,11 +4,11 @@ namespace JendStore.Client.Service.IService
 {
     public interface ICouponService
     {
-        Task<ResponseDTOStatus?> GetAllCouponAsync();
-        Task<ResponseDTOStatus?> GetByCodeCouponAsync(string code);
-        Task<ResponseDTOStatus?> GetCouponAsync(int id);
-        Task<ResponseDTOStatus?> UpdateCouponAsync(int id);
-        Task<ResponseDTOStatus?> CreateCouponAsync(CouponDTO couponDTO);
-        Task<ResponseDTOStatus?> DeleteCouponAsync(int id);
+        Task<ResponsDto?> GetAllCouponAsync();
+        Task<ResponsDto?> GetByCodeCouponAsync(string code);
+        Task<ResponsDto?> GetCouponAsync(int id);
+        Task<ResponsDto?> UpdateCouponAsync(int id);
+        Task<ResponsDto?> CreateCouponAsync(CouponDTO couponDTO);
+        Task<ResponsDto?> DeleteCouponAsync(int id);
     }
 }

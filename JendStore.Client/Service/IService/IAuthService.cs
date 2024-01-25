@@ -4,9 +4,9 @@ namespace JendStore.Client.Service.IService
 {
     public interface IAuthService
     {
-        Task<ResponseDTOStatus?> RegisterAsync(RegisterDto registerDto);
-        Task<ResponseDTOStatus?> LoginAsync(LoginDto loginDto);
-        Task<ResponseDTOStatus?> AssignRoleAsync(RegisterDto registerDto);
+        Task<ResponsDto?> RegisterAsync(RegisterDto registerDto);
+        Task<ResponsDto?> LoginAsync(LoginDto loginDto);
+        Task<ResponsDto?> AssignRoleAsync(RegisterDto registerDto);
 
     }
 }
