@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JendStore.Security.Service.API.Controllers
 {
-    
+
     [Route("api/auth")]
     [ApiController]
     public class AuthController : Controller
@@ -33,7 +33,7 @@ namespace JendStore.Security.Service.API.Controllers
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegistrationDto regDto)
         {
-            _logger.LogInformation($"Registration attempt for {regDto.Email}!");
+            _logger.LogInformation($"Registration attempt for {regDto.UserName}!");
             var error = await _auth.Register(regDto);
             if (!string.IsNullOrEmpty(error))
             {
@@ -41,10 +41,27 @@ namespace JendStore.Security.Service.API.Controllers
                 _responseDto.IsSuccess = false;
                 _responseDto.Message = ($"You Encountered: {error}");
                 return BadRequest(_responseDto);
-               
+
             }
-                return Ok(_responseDto);
+            return Ok(_responseDto);
         }
 
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto loginDto)
+        {
+            _logger.LogInformation($"Registration attempt for {loginDto}!");
+            var loginResponse = await _auth.Login(loginDto);
+            if (loginResponse.User == null)
+            {
+
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ($"Incorrect Credentials");
+                return BadRequest(_responseDto);
+
+            }
+            _responseDto.Result = loginResponse;
+            return Ok(_responseDto);
+        }
     }
 }

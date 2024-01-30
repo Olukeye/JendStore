@@ -35,7 +35,7 @@ namespace JendStore.Client.Controllers
             if (response != null && response.IsSuccess)
             {
                 LoginResponseDto loginResponseDto = JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(response.Result));
-                //_tokenProvider.SetToken(loginResponseDto.Token);
+                _tokenProvider.SetToken(loginResponseDto.Token);
 
                 return RedirectToAction("Index", "Home");
             }

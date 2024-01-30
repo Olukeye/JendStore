@@ -10,8 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DatabaseContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection"));
 });
-//builder.Services.AddScoped<IAuth, Auth>();
+//builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("jwtSettings:JwtOptions"));
+builder.Services.AddOptions<JwtOptions>().BindConfiguration(nameof(JwtOptions));
 builder.Services.AddScoped<IAuth2, Auth2>();
+builder.Services.AddScoped<IJwtToken, JwtToken>();
 builder.Services.AddAutoMapper(typeof(MapperInitilizer));
 var Config = builder.Configuration;
 
@@ -25,7 +27,7 @@ builder.Services.ConfigureApplicationCookie(opt =>
     opt.Cookie.SameSite = SameSiteMode.None;
 });
 
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddEndpointsApiExplorer(); 
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

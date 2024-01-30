@@ -3,11 +3,10 @@
 namespace JendStore.Security.Service.API.DTO
 {
 
-    public class LoginDto
+    public class LoginRequestDto
     {
         [Required]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [StringLength(14, ErrorMessage = "Your Password Is Limited To {2} To {1} Characters", MinimumLength = 4)]
@@ -20,12 +19,12 @@ namespace JendStore.Security.Service.API.DTO
         public string Token { get; set; }
     }
 
-    public class RegistrationDto : LoginDto
+    public class RegistrationDto : LoginRequestDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
-
+        public string Email { get; set; }
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
@@ -39,7 +38,7 @@ namespace JendStore.Security.Service.API.DTO
         public string Email { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
-        public string? Role { get; set; } 
+        public string Role { get; set; } 
     }
 
 

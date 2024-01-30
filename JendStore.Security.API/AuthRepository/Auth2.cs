@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using JendStore.Security.API.Data;
+﻿using JendStore.Security.API.Data;
 using JendStore.Security.API.Models;
 using JendStore.Security.Service.API.DTO;
 using Microsoft.AspNetCore.Identity;
-
 
 
 namespace JendStore.Security.Service.API.AuthRepository
@@ -13,20 +11,16 @@ namespace JendStore.Security.Service.API.AuthRepository
         private readonly DatabaseContext _db;
         private readonly UserManager<ApiUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IMapper _mapper;
+        private readonly IJwtToken _jwtToken;
 
-        public Auth2(UserManager<ApiUser> userManager, DatabaseContext db, RoleManager<IdentityRole> roleManager, IMapper mapper)
+
+        public Auth2(UserManager<ApiUser> userManager, DatabaseContext db, RoleManager<IdentityRole> roleManager, IJwtToken jwtToken)
         {
             _db = db;
             _userManager = userManager;
             _roleManager = roleManager;
-            _mapper = mapper;
-        }
+            _jwtToken = jwtToken;
 
-
-        public Task<LoginResponseDto> Login(LoginDto loginDto)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<string> Register(RegistrationDto regDto)
@@ -67,6 +61,35 @@ namespace JendStore.Security.Service.API.AuthRepository
 
             }
             return "Error!";
+        }
+
+        public async Task<LoginResponseDto> Login(LoginRequestDto loginDto)
+        {
+            var user = _db.ApiUser.FirstOrDefault(u => u.UserName.ToLower() == loginDto.UserName.ToLower());
+            bool isValid = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+
+            if(user == null || isValid == false)
+            {
+                return new LoginResponseDto() { User = null, Token = ""};
+            }
+
+            var token = _jwtToken.TokenGenerator(user);
+
+            UserDto userDto = new()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Address = user.Address,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email
+            };
+
+            LoginResponseDto loginResponseDto = new()
+            {
+                User = userDto,
+                Token = token
+            };
+            return loginResponseDto;
         }
     }
 }
