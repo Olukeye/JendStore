@@ -1,9 +1,14 @@
 ﻿using JendStore.Client.Models;
 using JendStore.Client.Service.IService;
 using JendStore.Client.Utilities;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+
 
 namespace JendStore.Client.Controllers
 {
@@ -18,7 +23,6 @@ namespace JendStore.Client.Controllers
             _tokenProvider = tokenProvider;
         }
 
-
         [HttpGet]
         public IActionResult Login()
         {
@@ -32,10 +36,11 @@ namespace JendStore.Client.Controllers
         {
             ResponsDto response = await _authService.LoginAsync(loginDto);
 
-            if (response != null && response.IsSuccess)
+            if (response!= null && response.IsSuccess)
             {
-                LoginResponseDto loginResponseDto = JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(response.Result));
-                _tokenProvider.SetToken(loginResponseDto.Token);
+                LoginResponseDto model = JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(response.Result));
+                await StaySignedIn(model);
+                _tokenProvider.SetToken(model.Token);
 
                 return RedirectToAction("Index", "Home");
             }
@@ -67,7 +72,7 @@ namespace JendStore.Client.Controllers
 
             if(result!=null && result.IsSuccess)
             {
-                if (string.IsNullOrEmpty(registerDto.Role))
+                if(string.IsNullOrEmpty(registerDto.Role))
                 {
                     registerDto.Role = HttpVerbs.RoleUser;
                 }
@@ -78,6 +83,10 @@ namespace JendStore.Client.Controllers
                     TempData["success"] = "Registration Successful";
                     return RedirectToAction(nameof(Login));
                 }
+            }
+            else
+            {
+                TempData["success"] = result.Message;
             }
 
             var role = new List<SelectListItem>()
@@ -90,10 +99,30 @@ namespace JendStore.Client.Controllers
             return View(registerDto);
         }
 
-        [HttpGet]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await HttpContext.SignOutAsync();
+            _tokenProvider.ClearToken();
+            return RedirectToAction("Index", "Home");
+        }
+
+        private async Task StaySignedIn(LoginResponseDto model)
+        {
+            var handler = new JwtSecurityTokenHandler();
+
+            var jwt = handler.ReadJwtToken(model.Token);
+
+            var identity = new ClaimsIdentity();
+
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email, jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub, jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Sub).Value));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name, jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Name).Value));
+
+            identity.AddClaim(new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
+            identity.AddClaim(new Claim(ClaimTypes.Role, jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
+
+            var principal = new ClaimsPrincipal(identity);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         }
     }
 }

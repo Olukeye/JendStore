@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace JendStore.Security.Service.API.AuthRepository
+namespace JendStore.Security.Service.API.AuthRepository.JwtAction
 {
     public class JwtToken : IJwtToken
     {
@@ -17,7 +17,7 @@ namespace JendStore.Security.Service.API.AuthRepository
         }
 
 
-        public string TokenGenerator(ApiUser apiUser)
+        public string TokenGenerator(ApiUser apiUser, IEnumerable<string> roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Environment.GetEnvironmentVariable("KEY");
@@ -25,9 +25,12 @@ namespace JendStore.Security.Service.API.AuthRepository
 
             var claimList = new List<Claim>
             {
+                new Claim(JwtRegisteredClaimNames.Sub, apiUser.Id),
                 new Claim(JwtRegisteredClaimNames.Email, apiUser.Email),
                 new Claim(JwtRegisteredClaimNames.Name, apiUser.UserName)
             };
+
+            claimList.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

@@ -1,8 +1,10 @@
+using JendStore.Client.Models;
 using JendStore.Client.Service;
 using JendStore.Client.Service.IService;
 using JendStore.Client.Sevice;
 using JendStore.Client.Sevice.IService;
 using JendStore.Client.Utilities;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,13 @@ builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromHours(12);
+    options.LoginPath = "/auth/Login";
+    options.AccessDeniedPath = "/auth/AccessDenied";
+
+});
 
 builder.Services.ConfigureApplicationCookie(opt =>
 {
@@ -40,6 +49,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

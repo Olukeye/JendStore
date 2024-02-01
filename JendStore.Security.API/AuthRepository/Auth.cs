@@ -1,102 +1,112 @@
-﻿//using JendStore.Security.API.Data;
-//using JendStore.Security.API.Models;
-//using JendStore.Security.Service.API.DTO;
-//using Microsoft.AspNetCore.Identity;
-//using Microsoft.IdentityModel.Tokens;
-//using System.IdentityModel.Tokens.Jwt;
-//using System.Security.Claims;
-//using System.Text;
-
-//namespace JendStore.Security.Service.API.AuthRepository
-//{
-//    public class Auth : IAuth
-//    {
-//        private readonly DatabaseContext _db;
-//        private readonly UserManager<ApiUser> _userManager;
-//        private readonly RoleManager<IdentityRole> _roleManager;
-//        private readonly IConfiguration _configuration;
-//        private ApiUser _user;
+﻿using JendStore.Security.API.Data;
+using JendStore.Security.API.Models;
+using JendStore.Security.Service.API.AuthRepository.JwtAction;
+using JendStore.Security.Service.API.DTO;
+using Microsoft.AspNetCore.Identity;
 
 
-//        public Auth(UserManager<ApiUser> userManager, DatabaseContext db,  IConfiguration configuration, RoleManager<IdentityRole> roleManager)
-//        {
-//            _db = db;
-//            _roleManager = roleManager;
-//            _userManager = userManager;
-//            _configuration = configuration;
-//        }
-
-//        public async Task<string> CreateToken()
-//        {
-//            var signingCredentials = GetSigningCredentials();
-//            var claims = await GetClaims();
-//            var token = GenerateTokenOptions(signingCredentials, claims);
-
-//            return new JwtSecurityTokenHandler().WriteToken(token);
-//        }
-
-    
-//        private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
-//        {
-//            var jwtSettings = _configuration.GetSection("Jwt");
-//            var expiration = DateTime.UtcNow.AddMinutes(Convert.ToDouble(jwtSettings.GetSection("ExpiredTime").Value));
-
-//            var token = new JwtSecurityToken(
-//                issuer: jwtSettings.GetSection("ValidIssuer").Value,
-//                claims: claims,
-//                expires: expiration,
-//                signingCredentials: signingCredentials
-//                );
-
-//            return token;
-//        }
-
-//        private async Task<List<Claim>> GetClaims()
-//        {
-//            var claims = new List<Claim>
-//           {
-//               new Claim(ClaimTypes.Name, _user.UserName),
-//           };
-
-//            var roles = await _userManager.GetRolesAsync(_user);
-//            foreach (var role in roles)
-//            {
-//                claims.Add(new Claim(ClaimTypes.Role, role));
-//            }
-//            return claims;
-//        }
+namespace JendStore.Security.Service.API.AuthRepository
+{
+    public class Auth : IAuth
+    {
+        private readonly DatabaseContext _db;
+        private readonly UserManager<ApiUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IJwtToken _jwtToken;
 
 
-//        private SigningCredentials GetSigningCredentials()
-//        {
-//            var key = Environment.GetEnvironmentVariable("KEY");
-//            var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+        public Auth(UserManager<ApiUser> userManager, DatabaseContext db, RoleManager<IdentityRole> roleManager, IJwtToken jwtToken)
+        {
+            _db = db;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _jwtToken = jwtToken;
 
-//            return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
-//        }
+        }
 
-//        public async Task<bool> ValidateUser(LoginDTO loginDTO)
-//        {
-//            _user = await _userManager.FindByNameAsync(loginDTO.Email);
-//            return (_user != null && await _userManager.CheckPasswordAsync(_user, loginDTO.Password));
-//        }
+        public async Task<string> Register(RegistrationDto regDto)
+        {
+            ApiUser user = new()
+            {
+                UserName = regDto.Email,
+                FirstName = regDto.FirstName,
+                LastName = regDto.LastName,
+                Address = regDto.Address,
+                Email = regDto.Email,
+                NormalizedEmail = regDto.Email,
+                PhoneNumber = regDto.PhoneNumber,
+            };
+            try
+            {
+                var result = await _userManager.CreateAsync(user, regDto.Password);
+                if (result.Succeeded)
+                {
+                    var returnUser = _db.ApiUser.FirstOrDefault(u => u.UserName == regDto.Email);
 
+                    UserDto userDto = new()
+                    {
+                        FirstName = returnUser.FirstName,
+                        LastName = returnUser.LastName,
+                        Address = returnUser.Address
+                    };
+                    return "";
+                }
+                else
+                {
+                    return result.Errors.FirstOrDefault().Description; 
+                }
+            }
+            catch (Exception ex)
+            {
 
-//        public async Task<bool> AssignRole(string email, string roleName)
-//        {
-//            var user = _db.Users.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
+            }
+            return "Error!";
+        }
 
-//            if (user != null)
-//            {
-//                if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
-//                {
-//                    _roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
-//                }
+        public async Task<LoginResponseDto> Login(LoginRequestDto loginDto)
+        {
+            var user = _db.ApiUser.FirstOrDefault(u => u.UserName.ToLower() == loginDto.UserName.ToLower());
+            bool isValid = await _userManager.CheckPasswordAsync(user, loginDto.Password);
 
-//                await _userManager.AddToRoleAsync(user, roleName);
-//                return true;
-//            }
-//            return false;
-//        }
-//    }
-//}
+            if(user == null || isValid == false)
+            {
+                return new LoginResponseDto() { User = null, Token = ""};
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = _jwtToken.TokenGenerator(user, roles);
+
+            UserDto userDto = new()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Address = user.Address,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email
+            };
+
+            LoginResponseDto loginResponseDto = new()
+            {
+                User = userDto,
+                Token = token
+            };
+            return loginResponseDto;
+        }
+
+        public async Task<bool> AssignRole(string email, string roleName)
+        {
+            var user = _db.ApiUser.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
+            if(user != null)
+            {
+                if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
+                {
+                    //Add role
+                    _roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
+                }
+                await _userManager.AddToRoleAsync(user, roleName);
+                return true;
+            }
+            return false;
+        }
+    }
+}

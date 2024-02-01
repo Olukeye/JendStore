@@ -1,4 +1,4 @@
-﻿namespace JendStore.Security.Service.API.AuthRepository
+﻿namespace JendStore.Security.Service.API.AuthRepository.JwtAction
 {
     public class JwtOptions
     {

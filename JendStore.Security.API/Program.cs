@@ -1,5 +1,6 @@
 using JendStore.Security.API.Data;
 using JendStore.Security.Service.API.AuthRepository;
+using JendStore.Security.Service.API.AuthRepository.JwtAction;
 using JendStore.Security.Service.API.Configuration;
 using JendStore.Security.Service.API.ServiceExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ builder.Services.AddDbContext<DatabaseContext>(options => {
 });
 //builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("jwtSettings:JwtOptions"));
 builder.Services.AddOptions<JwtOptions>().BindConfiguration(nameof(JwtOptions));
-builder.Services.AddScoped<IAuth2, Auth2>();
+builder.Services.AddScoped<IAuth, Auth>();
 builder.Services.AddScoped<IJwtToken, JwtToken>();
 builder.Services.AddAutoMapper(typeof(MapperInitilizer));
 var Config = builder.Configuration;
