@@ -39,14 +39,14 @@ namespace JendStore.Client.Controllers
             if (response!= null && response.IsSuccess)
             {
                 LoginResponseDto model = JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(response.Result));
-                await StaySignedIn(model);
+                //await StaySignedIn(model);
                 _tokenProvider.SetToken(model.Token);
 
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                ModelState.AddModelError("CustomeError", response.Message);
+                TempData["success"] = response.Message;
                 return View(loginDto);
             }
         }
@@ -119,7 +119,7 @@ namespace JendStore.Client.Controllers
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name, jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Name).Value));
 
             identity.AddClaim(new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
-            identity.AddClaim(new Claim(ClaimTypes.Role, jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
+            //identity.AddClaim(new Claim(ClaimTypes.Role, jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
 
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);

@@ -26,8 +26,8 @@ builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
     options.ExpireTimeSpan = TimeSpan.FromHours(12);
-    options.LoginPath = "/auth/Login";
-    options.AccessDeniedPath = "/auth/AccessDenied";
+    options.LoginPath = "/Auth/Login";
+    options.AccessDeniedPath = "/Auth/AccessDenied";
 
 });
 

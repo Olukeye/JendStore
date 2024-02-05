@@ -3,6 +3,7 @@ using JendStore.Services.API.Configuration;
 using JendStore.Services.API.Data;
 using JendStore.Services.API.IRepository;
 using JendStore.Services.API.Repository;
+using JendStore.Services.API.ServiceExtensions;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +20,14 @@ builder.Services.AddAutoMapper(typeof(MapperInitilizer));
 
 // Learn more about configuring Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var Config = builder.Configuration;
+
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+builder.Services.ConfigureJWT(Config);
+builder.Services.ConfigSwagger(Config);
+
 
 var app = builder.Build();
 
@@ -41,12 +49,14 @@ void ApplyAutoMigration()
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CouponApi v1"));
 }
 
 ApplyAutoMigration();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

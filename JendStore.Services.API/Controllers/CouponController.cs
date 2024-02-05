@@ -2,6 +2,7 @@
 using JendStore.Services.API.DTO;
 using JendStore.Services.API.IRepository;
 using JendStore.Services.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -9,6 +10,7 @@ namespace JendStore.Services.API.Controllers
 {
     [Route("api/coupon")]
     [ApiController]
+    [Authorize]
     public class CouponController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -22,7 +24,6 @@ namespace JendStore.Services.API.Controllers
             _mapper = mapper;
             _logger = logger;
             _response = new();
-
         }
 
         [HttpGet]
@@ -91,6 +92,7 @@ namespace JendStore.Services.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Post([FromBody] CreateCouponDTO createDTO)
         {
             try
@@ -118,6 +120,7 @@ namespace JendStore.Services.API.Controllers
         }
 
         [HttpPut("{couponId:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ResponseDTOStatus> Put(int couponId, [FromBody] UpdateCouponDTO updateDTO)
         {
             try
@@ -151,6 +154,7 @@ namespace JendStore.Services.API.Controllers
 
 
         [HttpDelete("{couponId:int}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ResponseDTOStatus> Delete(int couponId)
         {
             try

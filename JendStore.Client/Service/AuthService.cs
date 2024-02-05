@@ -33,7 +33,7 @@ namespace JendStore.Client.Service
                 ApiType = HttpVerbs.ApiType.POST,
                 Data = registerDto, 
                 Url = HttpVerbs.AuthAPIBase + "/api/auth/Register"
-            });
+            }, bearer: false);
         }
 
         public async Task<ResponsDto?> LoginAsync(LoginDto loginDto)
@@ -43,7 +43,7 @@ namespace JendStore.Client.Service
                 ApiType = HttpVerbs.ApiType.POST,
                 Data = loginDto,
                 Url = HttpVerbs.AuthAPIBase + "/api/auth/Login"
-            });
+            }, bearer: false);
         }
     }
 }

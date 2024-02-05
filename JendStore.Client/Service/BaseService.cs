@@ -1,4 +1,5 @@
 ﻿using JendStore.Client.Models;
+using JendStore.Client.Service.IService;
 using JendStore.Client.Sevice.IService;
 using Newtonsoft.Json;
 using System.Net;
@@ -10,14 +11,16 @@ namespace JendStore.Client.Sevice
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ITokenProvider _tokenProvider;
 
 
-        public BaseService(IHttpClientFactory httpClientFactory)
+        public BaseService(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider)
         {
             _httpClientFactory = httpClientFactory;
+            _tokenProvider = tokenProvider;
         }
 
-        public async Task<ResponsDto?> SendAsync(RequestDto requestDTOModel)
+        public async Task<ResponsDto?> SendAsync(RequestDto requestDTOModel, bool bearer = true)
         {
             try
             {
@@ -25,7 +28,12 @@ namespace JendStore.Client.Sevice
                 HttpRequestMessage message = new();
                 message.Headers.Add("Accept", "application/json");
 
-                //
+                //Bearer token for user to be able to access certain page or perform certain action
+                if (bearer)
+                {
+                    var token = _tokenProvider.GetToken();
+                    message.Headers.Add("Authorization", $"Bearer {token}");
+                }
 
                 message.RequestUri = new Uri(requestDTOModel.Url);
                 if (requestDTOModel != null)
