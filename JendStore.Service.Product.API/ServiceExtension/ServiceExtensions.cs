@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
-namespace JendStore.Services.API.ServiceExtensions
+namespace JendStore.Service.Product.API.ServiceExtensions
 {
     public static class ServiceExtensions
     {
@@ -41,8 +41,8 @@ namespace JendStore.Services.API.ServiceExtensions
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = @"JWT Authorization header using Bearer scheme. 
-                    Enter 'Bearer' [space] and then your token in the input below.
-                    Example: 'Bearer Oboy it worked o'",
+                Enter 'Bearer' [space] and then your token in the input below.
+                Example: 'Bearer Oboy it worked o'",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
@@ -50,22 +50,22 @@ namespace JendStore.Services.API.ServiceExtensions
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
                     {
+                        new OpenApiSecurityScheme
                         {
-                            new OpenApiSecurityScheme
+                            Reference = new OpenApiReference
                             {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                },
-                                Scheme = "0auth2",
-                                Name = "Bearer",
-                                In = ParameterLocation.Header
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
                             },
-                            new List<string>()
-                        }
+                            Scheme = "0auth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
                     }
+                }
                 );
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CouponApi", Version = "v1" });
             });
