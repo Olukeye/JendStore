@@ -1,21 +1,22 @@
-﻿using JendStore.Service.Product.API.Models;
+﻿using JendStore.Products.Service.API.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace JendStore.Service.Product.API.Data
+namespace JendStore.Products.Service.API.Data
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext: DbContext
     {
-
+        
         public DatabaseContext(DbContextOptions options) : base(options)
         {
 
         }
 
-        public DbSet<Products> Products { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
         }
     }
+    
 }

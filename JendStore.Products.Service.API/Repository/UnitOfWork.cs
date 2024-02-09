@@ -1,21 +1,20 @@
-﻿using JendStore.Services.API.Data;
-using JendStore.Services.API.IRepository;
-using JendStore.Services.API.Models;
-using System.Diagnostics.Metrics;
+﻿using JendStore.Products.Service.API.Data;
+using JendStore.Products.Service.API.Models;
+using JendStore.Products.Service.API.Repository.Interface;
 
-namespace JendStore.Services.API.Repository
+namespace JendStore.Products.Service.API.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DatabaseContext _context;
-        private IGenericRepository<Coupon> _coupons;
+        private IGenericRepository<Product> _products;
 
         public UnitOfWork(DatabaseContext context)
         {
             _context = context;
         }
 
-        public IGenericRepository<Coupon> Coupons => _coupons ??= new GenericRopository<Coupon>(_context);
+        public IGenericRepository<Product> Products => _products ??= new GenericRopository<Product>(_context);
 
         void IDisposable.Dispose()
         {

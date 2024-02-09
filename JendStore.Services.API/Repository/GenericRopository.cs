@@ -29,16 +29,12 @@ namespace JendStore.Services.API.Repository
             _dbSet.RemoveRange(entity);
         }
 
-
-
         public async Task<T> Get(Expression<Func<T, bool>> expression)
         {
             IQueryable<T> query = _dbSet;
 
             return await query.AsNoTracking().FirstOrDefaultAsync(expression);
         }
-
-
 
         public async Task<List<T>> GetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null)
         {
@@ -61,8 +57,6 @@ namespace JendStore.Services.API.Repository
             }
             return await query.AsNoTracking().ToListAsync();
         }
-
-
 
         public async Task Insert(T entity)
         {

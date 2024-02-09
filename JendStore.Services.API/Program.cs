@@ -28,7 +28,6 @@ builder.Services.AddAuthorization();
 builder.Services.ConfigureJWT(Config);
 builder.Services.ConfigSwagger(Config);
 
-
 var app = builder.Build();
 
 //Automatic Migration (checks for any pending migration, and if there's any it automatically apply migration to the database)

@@ -8,6 +8,7 @@ namespace JendStore.Security.Service.API.ResponseHandler
         public bool Success { get; set; } = true;
         public string? Message { get; set; } = string.Empty;
         public int Status { get; set; }
+        public int StatusCode { get; set; }
 
         public override string ToString() => JsonConvert.SerializeObject(this);
     }

@@ -1,15 +1,16 @@
-﻿using JendStore.Service.Product.API.Data;
+﻿using JendStore.Products.Service.API.Data;
+using JendStore.Products.Service.API.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace JendStore.Service.Product.API.Repository
+namespace JendStore.Products.Service.API.Repository
 {
-    public class GenericRepository <T>:IGenericRepository <T> where T : class
+    public class GenericRopository<T> : IGenericRepository<T> where T : class
     {
         private readonly DatabaseContext _context;
         private readonly DbSet<T> _dbSet;
 
-        public GenericRepository(DatabaseContext context)
+        public GenericRopository(DatabaseContext context)
         {
             _context = context;
             _dbSet = context.Set<T>();
@@ -26,8 +27,6 @@ namespace JendStore.Service.Product.API.Repository
         {
             _dbSet.RemoveRange(entity);
         }
-
-
 
         public async Task<T> Get(Expression<Func<T, bool>> expression)
         {
@@ -57,8 +56,6 @@ namespace JendStore.Service.Product.API.Repository
             }
             return await query.AsNoTracking().ToListAsync();
         }
-
-
 
         public async Task Insert(T entity)
         {

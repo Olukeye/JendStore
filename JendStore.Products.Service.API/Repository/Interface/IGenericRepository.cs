@@ -1,13 +1,13 @@
 ﻿using System.Linq.Expressions;
 
-namespace JendStore.Service.Product.API.Repository
+namespace JendStore.Products.Service.API.Repository.Interface
 {
     public interface IGenericRepository<T> where T : class
     {
         Task<List<T>> GetAll(
-          Expression<Func<T, bool>> expression = null,
-          Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-          List<string> includes = null);
+            Expression<Func<T, bool>> expression = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            List<string> includes = null);
 
         Task<T> Get(Expression<Func<T, bool>> expression);
         Task Insert(T entity);

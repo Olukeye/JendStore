@@ -1,14 +1,16 @@
-﻿namespace JendStore.Service.Product.API.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace JendStore.Products.Service.API.Models
 {
-    public class ProductDto
+    public class Product
     {
         public int ProductId { get; set; }
 
         public string Name { get; set; }
 
-        public string Description { get; set; }
-
         public double Price { get; set; }
+
+        public string Description { get; set; }
 
         public string CategoryName { get; set; }
 
