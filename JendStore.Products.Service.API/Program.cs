@@ -16,7 +16,10 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 builder.Services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddAutoMapper(typeof(MapperInitilizer));
+
+IMapper mapper = MapperInitilizer.RegisterMaps().CreateMapper();
+builder.Services.AddSingleton(mapper);
+
 
 // Learn more about configuring Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();

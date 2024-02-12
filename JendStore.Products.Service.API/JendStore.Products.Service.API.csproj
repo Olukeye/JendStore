@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <PackageReference Include="AutoMapper" Version="13.0.1" />
 	  <PackageReference Include="IdentityFramework.Core" Version="2.3.1" />
 	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.14" />
 	  <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.14" />
@@ -20,10 +21,6 @@
 	  </PackageReference>
 	  <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\JendStore.Security.API\JendStore.Security.Service.API.csproj" />
   </ItemGroup>
 
 </Project>

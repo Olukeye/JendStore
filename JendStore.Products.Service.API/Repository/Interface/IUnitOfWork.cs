@@ -1,4 +1,5 @@
-﻿using JendStore.Products.Service.API.Models;
+﻿
+using JendStore.Products.Service.API.Models;
 
 namespace JendStore.Products.Service.API.Repository.Interface
 {

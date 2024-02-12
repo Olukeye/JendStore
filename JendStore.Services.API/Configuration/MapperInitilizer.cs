@@ -4,13 +4,15 @@ using JendStore.Services.API.Models;
 
 namespace JendStore.Services.API.Configuration
 {
-    public class MapperInitilizer : Profile
+    public class MapperInitilizer
     {
-        public MapperInitilizer()
+        public static MapperConfiguration RegisterMaps()
         {
-            CreateMap<Coupon, CouponDTO>().ReverseMap();
-            CreateMap<Coupon, CreateCouponDTO>().ReverseMap();
-            CreateMap<Coupon, UpdateCouponDTO>().ReverseMap();
+            var config = new MapperConfiguration(cfg => {
+                cfg.CreateMap<Coupon, CouponDTO>().ReverseMap();
+                cfg.CreateMap<Coupon, CreateCouponDTO>().ReverseMap();
+            });
+            return config;
         }
 
     }

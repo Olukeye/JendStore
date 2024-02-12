@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JendStore.Products.Service.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240206230130_ProductTable")]
+    [Migration("20240212152058_ProductTable")]
     partial class ProductTable
     {
         /// <inheritdoc />

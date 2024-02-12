@@ -4,12 +4,15 @@ using JendStore.Products.Service.API.Models;
 
 namespace JendStore.Products.Service.API.Configurations
 {
-    public class MapperInitilizer : Profile
+    public class MapperInitilizer 
     {
-        public MapperInitilizer()
+        public static MapperConfiguration RegisterMaps()
         {
-            CreateMap<Product, ProductDto>().ReverseMap();
-            CreateMap<Product, CreateProductDto>().ReverseMap();
+            var config = new MapperConfiguration(cfg => {
+                cfg.CreateMap<Product, ProductDto>().ReverseMap();
+                cfg.CreateMap<Product, CreateProductDto>().ReverseMap();
+            });
+            return config;
         }
 
     }

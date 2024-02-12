@@ -1,4 +1,4 @@
-﻿using JendStore.Security.Service.API.ResponseHandler;
+﻿using JendStore.Products.Service.API.ResponseHandler;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace JendStore.Products.Service.API.Models
+﻿namespace JendStore.Products.Service.API.Models
 {
     public class Product
     {
