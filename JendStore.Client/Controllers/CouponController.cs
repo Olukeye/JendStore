@@ -24,6 +24,10 @@ namespace JendStore.Client.Controllers
             {
                 list = JsonConvert.DeserializeObject<List<CouponDTO>>(Convert.ToString(response.Result));
             }
+            else
+            {
+                TempData["success"] = response?.Message;
+            }
             return View(list);
         }
 
@@ -43,6 +47,10 @@ namespace JendStore.Client.Controllers
                 {
                     return RedirectToAction(nameof(CouponIndex));
                 }
+                else
+                {
+                    TempData["success"] = response?.Message;
+                }
             }
             return View(create);
         }
@@ -57,6 +65,10 @@ namespace JendStore.Client.Controllers
                 CouponDTO? model = JsonConvert.DeserializeObject<CouponDTO>(Convert.ToString(response.Result));
                 return View(model);
             }
+            else
+            {
+                TempData["success"] = response?.Message;
+            }
             return NotFound();
         }
 
@@ -65,10 +77,14 @@ namespace JendStore.Client.Controllers
         {
             ResponsDto? response = await _couponService.DeleteCouponAsync(couponDTO.CouponId);
 
-                if (response != null && response.IsSuccess)
-                {
-                    return RedirectToAction(nameof(CouponIndex));
-                }
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction(nameof(CouponIndex));
+            }
+            else
+            {
+                TempData["success"] = response?.Message;
+            }
 
             return View(couponDTO);
         }

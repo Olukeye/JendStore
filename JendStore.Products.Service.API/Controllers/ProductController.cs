@@ -1,120 +1,131 @@
-﻿//using AutoMapper;
-//using JendStore.Products.Service.API.DTO;
-//using JendStore.Products.Service.API.Models;
-//using JendStore.Products.Service.API.Repository.Interface;
-//using JendStore.PRoducts.Service.API.DTO;
-//using Microsoft.AspNetCore.Authorization;
-//using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using JendStore.Products.Service.API.DTO;
+using JendStore.Products.Service.API.Models;
+using JendStore.Products.Service.API.Repository.Interface;
+using JendStore.PRoducts.Service.API.DTO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-//namespace JendStore.Products.Service.API.Controllers
-//{
-//    [Route("api/product")]
-//    [ApiController]
-//    public class ProductController : ControllerBase
-//    {
-//        private readonly IUnitOfWork _unitOfWork;
-//        private readonly IMapper _mapper;
-//        private readonly ILogger<ProductController> _logger;
-//        protected ResponseDTOStatus _response;
+namespace JendStore.Products.Service.API.Controllers
+{
+    [Route("api/product")]
+    [ApiController]
+    public class ProductController : ControllerBase
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly ILogger<ProductController> _logger;
+        protected ResponseDTOStatus _response;
 
-//        public ProductController(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ProductController> logger)
-//        {
-//            _unitOfWork = unitOfWork;
-//            _mapper = mapper;
-//            _logger = logger;
-//            _response = new();
-//        }
+        public ProductController(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ProductController> logger)
+        {
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+            _logger = logger;
+            _response = new();
+        }
 
-//        [HttpGet]
-//        public async Task<IActionResult> Get()
-//        {
-//            var product = await _unitOfWork.Products.GetAll();
-//            _response.Result = _mapper.Map<IList<ProductDto>>(product);
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Get()
+        {
+            var product = await _unitOfWork.Products.GetAll();
+            _response.Result = _mapper.Map<IList<ProductDto>>(product);
 
-//            return Ok(_response);
-//        }
+            return Ok(_response);
+        }
 
-//        [HttpGet("{productId:int}")]
-//        public async Task<IActionResult> Get(int productId)
-//        {
-//            try
-//            {
-//                if (!ModelState.IsValid)
-//                {
-//                    _response.Result = ModelState;
-//                }
+        [HttpGet("{productId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Get(int productId)
+        {
+            var product = await _unitOfWork.Products.Get(c => c.ProductId == productId);
+            _response.Result = _mapper.Map<ProductDto>(product);
 
-//                var product = await _unitOfWork.Products.Get(c => c.ProductId == productId);
+            return Ok(_response);
+        }
 
-//                _response.Result = _mapper.Map<ProductDto>(product);
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Post([FromBody] CreateProductDto createDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError($"Invalid Post Action in {nameof(Post)}");
+                _response.Result = ModelState;
+            }
+            var product = _mapper.Map<Product>(createDto);
 
-//            }
-//            catch (Exception ex)
-//            {
-//                _response.IsSuccess = false;
-//                _response.Message = ex.Message;
-//            }
+            await _unitOfWork.Products.Insert(product);
 
-//            return Ok(_response);
-//        }
+            await _unitOfWork.Save();
 
-//        [HttpPost]
-//        public async Task<IActionResult> Post([FromBody] CreateProductDto createDto)
-//        {
-//            try
-//            {
-//                if (!ModelState.IsValid)
-//                {
-//                    _logger.LogError($"Invalid Post Action in {nameof(Post)}");
-//                    _response.Result = ModelState;
-//                }
-//                //var product = _mapper.Map<Product>(createDto);
+            _response.Result = product;
 
-//                //await _unitOfWork.Products.Insert(product);
+            return Ok(_response);
+        }
 
-//                await _unitOfWork.Save();
+        [HttpPut("{productId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Put(int productId, [FromBody] UpdateProduct update)
+        {
+            if (!ModelState.IsValid && productId < 1)
+            {
+                _logger.LogError($"Invalid Update Action in {nameof(Put)}");
+                return BadRequest(ModelState);
+            }
 
-//                //_response.Result = product;
+            var product = await _unitOfWork.Products.Get(c => c.ProductId == productId);
 
-//            }
-//            catch (Exception ex)
-//            {
-//                _response.IsSuccess = false;
-//                _response.Message = ex.Message;
-//            }
-//            return Ok(_response);
-//        }
+            if (product == null)
+            {
+                _logger.LogError($"Invalid action in {nameof(Put)}");
+                return BadRequest("Wrong Data Submitted");
+            }
 
-//        [HttpPut("{productId:int}")]
-//        public async Task<IActionResult> Put(int productId, [FromBody] UpdateProduct update)
-//        {
-//            try
-//            {
-//                if (!ModelState.IsValid && productId < 1)
-//                {
-//                    _logger.LogError($"Invalid Update Action in {nameof(Put)}");
-//                    _response.Result = ModelState;
-//                }
+            var result = _mapper.Map(update, product);
+            _unitOfWork.Products.Update(product);
+            await _unitOfWork.Save();
 
-//                var product = await _unitOfWork.Products.Get(c => c.ProductId == productId);
+            _response.Result = result;
 
-//                if (product == null)
-//                {
-//                    _logger.LogError($"Invalid action in {nameof(Put)}");
-//                }
+            return Ok(_response);
 
-//                var result = _mapper.Map(update, product);
-//                _unitOfWork.Products.Update(product);
-//                await _unitOfWork.Save();
+        }
 
-//                _response.Result = result;
-//            }
-//            catch (Exception ex)
-//            {
-//                _response.IsSuccess = false;
-//                _response.Message = ex.Message;
-//            }
-//            return Ok(_response);
-//        }
-//    }
-//}
+        [HttpDelete("{productId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Delete(int productId)
+        {
+            if (!ModelState.IsValid && productId < 1)
+            {
+                _logger.LogError($"Invalid Update Action in {nameof(Delete)}");
+                return BadRequest(ModelState);
+            }
+
+            var product = await _unitOfWork.Products.Get(c => c.ProductId == productId);
+
+            if (product == null)
+            {
+                _logger.LogError($"Invalid action in {nameof(Delete)}");
+                return BadRequest("Wrong Data Submitted");
+            }
+
+            await _unitOfWork.Products.Delete(productId);
+            await _unitOfWork.Save();
+
+            return Ok(_response);
+
+        }
+    }
+}

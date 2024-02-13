@@ -27,6 +27,9 @@ namespace JendStore.Services.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Get()
         {
             var coupon = await _unitOfWork.Coupons.GetAll();
@@ -37,29 +40,22 @@ namespace JendStore.Services.API.Controllers
         }
 
         [HttpGet("{couponId:int}")]
-        public async Task<IActionResult> Get(int couponId)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ResponseDTOStatus> Get(int couponId)
         {
-            try
+            var coupon = await _unitOfWork.Coupons.Get(c => c.CouponId == couponId);
+            if (coupon == null)
             {
-                if (!ModelState.IsValid)
-                {
-                    _response.Result = ModelState;
-                }
-
-                var coupon = await _unitOfWork.Coupons.Get(c => c.CouponId == couponId);
-
-                _response.Result = _mapper.Map<CouponDTO>(coupon);
-
-            }
-            catch (Exception ex)
-            {
+                _logger.LogError($"Invalid action in {nameof(Get)}");
                 _response.IsSuccess = false;
-                _response.Message = ex.Message;
+                _response.Message = "coupon Id is Invalid";
             }
 
-            return Ok(_response);
+            _response.Result = _mapper.Map<CouponDTO>(coupon);
+            return _response;
         }
-
 
         [HttpGet("code/{code}")]
         public async Task<ResponseDTOStatus> GetCode(string code)
