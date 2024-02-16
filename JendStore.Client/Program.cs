@@ -16,7 +16,9 @@ builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
+
 HttpVerbs.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
+HttpVerbs.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 HttpVerbs.AuthAPIBase = builder.Configuration["ServiceUrls:AuthAPI"];
 
 

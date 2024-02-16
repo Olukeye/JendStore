@@ -26,7 +26,7 @@ namespace JendStore.Client.Controllers
             }
             else
             {
-                TempData["success"] = response?.Message;
+                TempData["error"] = response?.Message;
             }
 
             return View(list);
@@ -50,7 +50,7 @@ namespace JendStore.Client.Controllers
                 }
                 else
                 {
-                    TempData["success"] = response?.Message;
+                    TempData["error"] = response?.Message;
                 }
             }
             return View(create);
@@ -68,7 +68,7 @@ namespace JendStore.Client.Controllers
             }
             else
             {
-                TempData["success"] = response?.Message;
+                TempData["error"] = response?.Message;
             }
 
             return NotFound();
@@ -86,7 +86,7 @@ namespace JendStore.Client.Controllers
             }
             else
             {
-                TempData["success"] = response?.Message;
+                TempData["error"] = response?.Message;
             }
 
             return View(productDto);
