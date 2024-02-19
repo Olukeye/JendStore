@@ -34,7 +34,7 @@ namespace JendStore.Client.Controllers
             return View(list);
         }
 
-        public async Task<IActionResult> PrductDetail(int productId)
+        public async Task<IActionResult> DetailProduct(int productId)
         {
             ProductDto? model = new();
 

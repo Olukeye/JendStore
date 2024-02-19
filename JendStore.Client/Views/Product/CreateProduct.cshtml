@@ -1,0 +1,28 @@
+﻿@model ProductDto
+
+<!-- Create a form with Bootstrap classes -->
+<form class="row g-3 mt-5" asp-action="CreateProduct">
+    <div class="col-md-6">
+        <label for="inputName" class="form-label">Name</label>
+        <input asp-for="Name" type="Name" class="form-control" id="inputName">
+        <span asp-validation-for="Name" class="text-danger" />
+    </div>
+    <div class="col-md-6">
+        <label for="inputDiscount" class="form-label">Description</label>
+        <input asp-for="Description" type="discount" class="form-control" id="inputDiscount">
+        <span asp-validation-for="Description" class="text-danger" />
+    </div>
+    <div class="col-12">
+        <label for="inputCategoryName" class="form-label">CategoryName</label>
+        <input asp-for="CategoryName" type="CategoryName" class="form-control" id="inputCategoryName">
+        <span asp-validation-for="CategoryName" class="text-danger" />
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-success">Submit</button>
+        <a asp-action="ProductIndex" type="return" class="btn btn-info">Return</a>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

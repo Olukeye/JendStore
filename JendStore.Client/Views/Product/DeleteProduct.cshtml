@@ -1,0 +1,22 @@
+﻿@model ProductDto
+
+<form asp-action="DeleteProduct" class="row g-3 mt-5">
+    <h1>Delete <span>Product</span></h1>
+    <input asp-for="ProductId" hidden />
+    <div class="col-md-6">
+        <label for="Code" class="form-label">Code</label>
+        <input asp-for="Name" type="Name" class="form-control" disabled>
+    </div>
+    <div class="col-md-6">
+        <label for="Description" class="form-label">Description</label>
+        <input asp-for="Description" type="Description" class="form-control" disabled>
+    </div>
+    <div class="col-12">
+        <label for="inputMinAmoun" class="form-label">CategoryName</label>
+        <input asp-for="CategoryName" type="CategoryName" disabled class="form-control">
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-success">Delete</button>
+        <a asp-action="ProductIndex" type="return" class="btn btn-info">Return</a>
+    </div>
+</form>
