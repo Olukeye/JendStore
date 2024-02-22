@@ -1,4 +1,6 @@
-﻿namespace JendStore.Client.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace JendStore.Client.Models
 {
     public class ProductDto
     {
@@ -13,5 +15,8 @@
         public string CategoryName { get; set; }
 
         public string ImageUrl { get; set; }
+
+        [Range(1,50)]
+        public int Count { get; set; }
     }
 }

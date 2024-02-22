@@ -1,5 +1,6 @@
 ﻿using JendStore.Client.Models;
 using JendStore.Client.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
@@ -34,6 +35,7 @@ namespace JendStore.Client.Controllers
             return View(list);
         }
 
+        //[Authorize]
         public async Task<IActionResult> DetailProduct(int productId)
         {
             ProductDto? model = new();

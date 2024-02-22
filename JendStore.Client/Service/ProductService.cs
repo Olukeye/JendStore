@@ -42,12 +42,13 @@ namespace JendStore.Client.Service
             });
         }
 
-        public async Task<ResponsDto?> UpdateProductAsync(int id)
+        public async Task<ResponsDto?> UpdateProductAsync(ProductDto productDto)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = HttpVerbs.ApiType.PUT,
-                Url = HttpVerbs.ProductAPIBase + "/api/product/" + id
+                Data = productDto,
+                Url = HttpVerbs.ProductAPIBase + "/api/product"
             });
         }
 

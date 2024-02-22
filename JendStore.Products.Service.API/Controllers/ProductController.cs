@@ -109,7 +109,7 @@ namespace JendStore.Products.Service.API.Controllers
         {
             if (!ModelState.IsValid && productId < 1)
             {
-                _logger.LogError($"Invalid Update Action in {nameof(Delete)}");
+                _logger.LogError($"Invalid Action in {nameof(Delete)}");
                 return BadRequest(ModelState);
             }
 

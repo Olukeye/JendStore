@@ -56,10 +56,10 @@ namespace JendStore.Client.Controllers
             return View(create);
         }
 
-        public async Task<IActionResult> DeleteProduct(int productDto)
+        public async Task<IActionResult> DeleteProduct(int productId)
         {
 
-            ResponsDto? response = await _productService.GetProductAsync(productDto);
+            ResponsDto? response = await _productService.GetProductAsync(productId);
 
             if (response != null && response.IsSuccess)
             {
@@ -81,7 +81,43 @@ namespace JendStore.Client.Controllers
 
             if (response != null && response.IsSuccess)
             {
-                TempData["success"] = "Registration Successful";
+                TempData["success"] = "Product deleted Successful";
+                return RedirectToAction(nameof(ProductIndex));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+
+            return View(productDto);
+        }
+
+        public async Task<IActionResult> EditProduct(int productId)
+        {
+
+            ResponsDto? response = await _productService.GetProductAsync(productId);
+
+            if (response != null && response.IsSuccess)
+            {
+                ProductDto? model = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+                return View(model);
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProduct(ProductDto productDto)
+        {
+            ResponsDto? response = await _productService.UpdateProductAsync(productDto);
+
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Product deleted Successful";
                 return RedirectToAction(nameof(ProductIndex));
             }
             else

@@ -1,0 +1,62 @@
+﻿@model ProductDto
+
+
+<form asp-action="EditProduct" class="form-horizontal">
+    <fieldset>
+        <!-- Form Name -->
+        <legend>Edit Product</legend>
+
+        <input hidden asp-for="ProductId" />
+
+        <!-- Text input-->
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="name">NAME</label>
+            <div class="col-md-4">
+                <input asp-for="Name" id="name" type="Name" placeholder="PRODUCT NAME" class="form-control input-md" required="">
+            </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group mt-3">
+            <label class="col-md-4 control-label" for="price">PRICE</label>
+            <div class="col-md-4">
+                <input asp-for="Price" id="price" type="Price" placeholder="PRODUCT PRICE " class="form-control input-md" required="">
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <label class="col-md-4 control-label" for="categoryName">CATEGORY</label>
+            <div class="col-md-4">
+                <input asp-for="CategoryName" id="categoryName" type="CategoryName" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Textarea -->
+        <div class="form-group mt-3">
+            <label class="col-md-4 control-label" for="description">DESCRIPTION</label>
+            <div class="col-md-4">
+                <textarea asp-for="Description" class="form-control" type="Description"></textarea>
+            </div>
+        </div>
+
+        <!-- File Button -->
+        <div class="form-group mt-3">
+            <label class="col-md-4 control-label" for="filebutton">Image</label>
+            <div class="col-md-4">
+                <input asp-for="ImageUrl" id="filebutton" class="input-file" type="file">
+            </div>
+        </div>
+
+        <!-- Button -->
+        <div class="form-group mt-3">
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-success">Submit</button>
+                <a asp-action="ProductIndex" type="return" class="btn btn-info">Return</a>
+            </div>
+        </div>
+
+    </fieldset>
+</form>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

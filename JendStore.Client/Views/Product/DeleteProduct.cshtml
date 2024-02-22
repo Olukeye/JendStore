@@ -1,22 +1,55 @@
 ﻿@model ProductDto
 
-<form asp-action="DeleteProduct" class="row g-3 mt-5">
-    <h1>Delete <span>Product</span></h1>
-    <input asp-for="ProductId" hidden />
-    <div class="col-md-6">
-        <label for="Code" class="form-label">Code</label>
-        <input asp-for="Name" type="Name" class="form-control" disabled>
-    </div>
-    <div class="col-md-6">
-        <label for="Description" class="form-label">Description</label>
-        <input asp-for="Description" type="Description" class="form-control" disabled>
-    </div>
-    <div class="col-12">
-        <label for="inputMinAmoun" class="form-label">CategoryName</label>
-        <input asp-for="CategoryName" type="CategoryName" disabled class="form-control">
-    </div>
-    <div class="col-12">
-        <button type="submit" class="btn btn-success">Delete</button>
-        <a asp-action="ProductIndex" type="return" class="btn btn-info">Return</a>
-    </div>
+
+<form asp-action="DeleteProduct">
+        <!-- Form Name -->
+        <legend>Delete Product</legend>
+
+        <input asp-for="ProductId" hidden />
+
+        <!-- Text input-->
+        <div class="form-group">
+        <label for="Name" class="col-md-4 control-label">NAME</label>
+            <div class="col-md-4">
+            <input asp-for="Name" type="Name" class="form-control input-md" disabled>
+            </div>
+        </div>
+
+        <!-- Text input-->
+         <div for="Pescription" class="form-group mt-3">
+            <label class="col-md-4 control-label">PRICE</label>
+            <div class="col-md-4">
+            <input asp-for="Price" type="Price" class="form-control input-md" disabled>
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+        <label for="CategoryName" class="col-md-4 control-label">CATEGORY</label>
+            <div class="col-md-4">
+            <input asp-for="CategoryName" type="CategoryName" class="form-control" disabled />
+            </div>
+        </div>
+
+        <!-- Textarea -->
+        <div class="form-group mt-3">
+        <label for="Description" class="col-md-4 control-label">DESCRIPTION</label>
+            <div class="col-md-4">
+            <textarea asp-for="Description" class="form-control" type="Description" disabled></textarea>
+            </div>
+        </div>
+
+        <!-- File Button -->
+        <div class="form-group mt-3">
+        <label for="filebutton" class="col-md-4 control-label">Image</label>
+            <div class="col-md-4">
+            <input asp-for="ImageUrl" class="input-file" type="file" disabled>
+            </div>
+        </div>
+        <!-- Button -->
+        <div class="form-group mt-3">
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-success">Delete</button>
+                <a asp-action="ProductIndex" type="return" class="btn btn-info">Return</a>
+            </div>
+        </div>
 </form>
