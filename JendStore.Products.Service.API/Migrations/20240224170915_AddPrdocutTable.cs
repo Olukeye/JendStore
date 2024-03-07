@@ -5,7 +5,7 @@
 namespace JendStore.Products.Service.API.Migrations
 {
     /// <inheritdoc />
-    public partial class ProductTable : Migration
+    public partial class AddPrdocutTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

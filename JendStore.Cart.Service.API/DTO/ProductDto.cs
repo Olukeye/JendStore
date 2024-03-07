@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace JendStore.Client.Models
+namespace JendStore.Cart.Service.API.DTO
 {
     public class ProductDto
     {
         public int ProductId { get; set; }
-
+         
         public string Name { get; set; }
 
         public double Price { get; set; }
@@ -15,8 +15,5 @@ namespace JendStore.Client.Models
         public string CategoryName { get; set; }
 
         public string ImageUrl { get; set; }
-
-        [Range(1,50)]
-        public int Quantity { get; set; }
     }
 }
